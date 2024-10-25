@@ -7,10 +7,9 @@ accelerator:
 
   options:
 
-
-  - name: foobar
-    label: FooBar
-    dataType: [FooBarType]
+  - name: services
+    label: service test
+    dataType: ServiceType
 
 
   # - name: serviceConfiguration
@@ -210,39 +209,33 @@ accelerator:
   
   types:
 
-    - name: FooType
-      struct:
-        - name: foo1
-          dataType: string
-        - name: bar1
-          dataType: string
 
-    - name: BarType
-      struct:
-        - name: foo2
-          dataType: string
-        - name: bar2
-          dataType: string
-
-    - name: FooBarType
-      struct:
-        - name: foo
-          dataType: [FooType]
-        - name: bar
-          dataType: [BarType]
-   
-    - name: ServiceConfigType
+    - name: ServiceType
       struct:
         - name: serviceName
           dataType: string
-        - name: servicePrefixPath
+          label: Service Name
+          description: service name
+        - name: routes
+          dataType: [RouteType]
+          label: Routes
+          description: routes
+
+    - name: RouteType
+      struct:
+        - name: path
           dataType: string
-        - name: serviceFilters
+          label: "Match Rule: Context / Path"
+        - name: method 
+          dataType: string
+          label: "Match Rule: HTTP Verbs"
+        - name: filters
           dataType: [string]
-    #     - name: routes
-    #       dataType: Route
-    #       label: Route Config Override
-    #       display: true
+          label: "Filters"
+        - name: order
+          datatype: string
+          label: Route Priority
+
 
     - name: Route
       struct:
@@ -258,6 +251,21 @@ accelerator:
         - name: order
           datatype: string
           label: Route Priority
+
+   
+    - name: ServiceConfigType
+      struct:
+        - name: serviceName
+          dataType: string
+        - name: servicePrefixPath
+          dataType: string
+        - name: serviceFilters
+          dataType: [string]
+    #     - name: routes
+    #       dataType: Route
+    #       label: Route Config Override
+    #       display: true
+
 
 
 
