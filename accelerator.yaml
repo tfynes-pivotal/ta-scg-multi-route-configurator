@@ -130,10 +130,10 @@ accelerator:
     inputType: text
     defaultValue: "https://cp.homelab.fynesy.com/api-docs"
 
-  # - name: routesArray
-  #   label: "Route Configuration: override"
-  #   description: "Path/Method match service methods to provide additional configuration"
-  #   dataType: [Route]
+  - name: routesArray
+    label: "Route Configuration: override"
+    description: "Path/Method match service methods to provide additional configuration"
+    dataType: [Route]
   #   defaultValue: [{ "path":"/**","method":"GET,PUT,POST,PATCH,DELETE","filters":["StripPrefix=0"],"order":"10"}]
 
 
