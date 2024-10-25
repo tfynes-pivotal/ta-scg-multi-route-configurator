@@ -17,7 +17,7 @@ accelerator:
 
   - name: foobar
     label: FooBar
-    dataType: FooBarType
+    dataType: [FooBarType]
 
 
   # - name: serviceConfiguration
