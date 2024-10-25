@@ -7,13 +7,6 @@ accelerator:
 
   options:
 
-  - name: foo
-    label: Foo
-    dataType: [FooType]
-
-  - name: bar
-    label: Bar
-    dataType: [BarType]
 
   - name: foobar
     label: FooBar
