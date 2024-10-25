@@ -9,7 +9,7 @@ accelerator:
 
   - name: services
     label: service test
-    dataType: ServiceType
+    dataType: [ServiceType]
 
 
   # - name: serviceConfiguration
