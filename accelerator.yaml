@@ -234,9 +234,9 @@ accelerator:
     - name: FooBarType
       struct:
         - name: foo
-          dataType: FooType
+          dataType: [FooType]
         - name: bar
-          dataType: BarType
+          dataType: [BarType]
    
     - name: ServiceConfigType
       struct:
