@@ -9,12 +9,12 @@ accelerator:
 
   - name: foo
     label: Foo
-    dataType: FooType
-    
+    dataType: [FooType]
 
-  - name: serviceConfiguration
-    label: Service Configuration
-    dataType: ServiceConfigType
+
+  # - name: serviceConfiguration
+  #   label: Service Configuration
+  #   dataType: ServiceConfigType
     #defaultValue: [{"serviceName":"foo","servicePrefixPath":"/cp/**","serviceFilters":["StripPrefix=1"],"routes":[{ "path":"/**","method":"GET,PUT,POST,PATCH,DELETE","filters":["0"],"order":"10"}]}]
   
 
