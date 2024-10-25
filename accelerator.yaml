@@ -130,11 +130,11 @@ accelerator:
     inputType: text
     defaultValue: "https://cp.homelab.fynesy.com/api-docs"
 
-  - name: routesArray
-    label: "Route Configuration: override"
-    description: "Path/Method match service methods to provide additional configuration"
-    dataType: [Route]
-    defaultValue: [{ "path":"/**","method":"GET,PUT,POST,PATCH,DELETE","filters":["StripPrefix=0"],"order":"10"}]
+  # - name: routesArray
+  #   label: "Route Configuration: override"
+  #   description: "Path/Method match service methods to provide additional configuration"
+  #   dataType: [Route]
+  #   defaultValue: [{ "path":"/**","method":"GET,PUT,POST,PATCH,DELETE","filters":["StripPrefix=0"],"order":"10"}]
 
 
   
@@ -217,20 +217,20 @@ accelerator:
     #       label: Route Config Override
     #       display: true
 
-    - name: Route
-      struct:
-        - name: path
-          dataType: string
-          label: "Match Rule: Context / Path"
-        - name: method 
-          dataType: string
-          label: "Match Rule: HTTP Verbs"
-        - name: filters
-          dataType: [string]
-          label: "Filters"
-        - name: order
-          datatype: string
-          label: Route Priority
+    # - name: Route
+    #   struct:
+    #     - name: path
+    #       dataType: string
+    #       label: "Match Rule: Context / Path"
+    #     - name: method 
+    #       dataType: string
+    #       label: "Match Rule: HTTP Verbs"
+    #     - name: filters
+    #       dataType: [string]
+    #       label: "Filters"
+    #     - name: order
+    #       datatype: string
+    #       label: Route Priority
 
 
 
