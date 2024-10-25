@@ -8,7 +8,7 @@ accelerator:
   options:
 
   - name: services
-    label: service test
+    label: services test
     dataType: [ServiceType]
 
 
