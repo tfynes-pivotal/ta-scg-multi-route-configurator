@@ -7,9 +7,9 @@ accelerator:
 
   options:
 
-  - name: serviceConfiguration
-    label: Service Configuration
-    dataType: ServiceConfigType
+  # - name: serviceConfiguration
+  #   label: Service Configuration
+  #   dataType: ServiceConfigType
     #defaultValue: [{"serviceName":"foo","servicePrefixPath":"/cp/**","serviceFilters":["StripPrefix=1"],"routes":[{ "path":"/**","method":"GET,PUT,POST,PATCH,DELETE","filters":["0"],"order":"10"}]}]
   
 
@@ -204,18 +204,18 @@ accelerator:
   
   types:
    
-    - name: ServiceConfigType
-      struct:
-        - name: serviceName
-          dataType: string
-        - name: servicePrefixPath
-          dataType: string
-        - name: serviceFilters
-          dataType: [string]
-        - name: routes
-          dataType: Route
-          label: Route Config Override
-          display: true
+    # - name: ServiceConfigType
+    #   struct:
+    #     - name: serviceName
+    #       dataType: string
+    #     - name: servicePrefixPath
+    #       dataType: string
+    #     - name: serviceFilters
+    #       dataType: [string]
+    #     - name: routes
+    #       dataType: Route
+    #       label: Route Config Override
+    #       display: true
 
     - name: Route
       struct:
