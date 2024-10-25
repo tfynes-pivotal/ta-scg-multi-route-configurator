@@ -204,14 +204,14 @@ accelerator:
   
   types:
    
-    # - name: ServiceConfigType
-    #   struct:
-    #     - name: serviceName
-    #       dataType: string
-    #     - name: servicePrefixPath
-    #       dataType: string
-    #     - name: serviceFilters
-    #       dataType: [string]
+    - name: ServiceConfigType
+      struct:
+        - name: serviceName
+          dataType: string
+        - name: servicePrefixPath
+          dataType: string
+        - name: serviceFilters
+          dataType: [string]
     #     - name: routes
     #       dataType: Route
     #       label: Route Config Override
