@@ -1,0 +1,28 @@
+test
+
+createGateway
+gatewayHostname
+gatewayTitle
+gatewayDescription
+gatewayVersion
+gatewayApiGroupId
+
+servicePredicatePath
+serviceStripPrefixEnabled
+serviceStripPrefixValue
+serviceAppName
+serviceOpenApiUrl
+
+routesArray
+
+platformConfiguration
+openApiToRouteConfigConversionServiceEndpoint
+
+
+Route:
+    routeContext
+    routeVerbs
+    routeStripPrefix
+    routeOrder
+
+    

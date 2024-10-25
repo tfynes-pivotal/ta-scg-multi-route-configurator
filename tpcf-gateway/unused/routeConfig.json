@@ -1,0 +1,17 @@
+{
+    "service": {
+        "filters": ["StripPrefix=SERVICE_STRIP_PREFIX_VALUE"],
+        "predicates": ["Path=SERVICE_PREDICATE_PATH"]
+    },
+    "openapi": {
+        "location": "IMPLEMENTATION_OPENAPI_URL"
+    },
+    "routes": [
+    {
+        "method": "ROUTE1_METHODS",
+        "path": "ROUTE1_PATH",
+        "filters": ["StripPrefix=ROUTE1_STRIP_PREFIX_VALUE"],
+        "order": ROUTE1_ORDER
+    }
+    ]
+}

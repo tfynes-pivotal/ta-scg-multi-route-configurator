@@ -1,0 +1,7 @@
+{ 
+    "host":"GATEWAY_HOSTNAME",
+    "title": "GATEWAY_TITLE",
+    "description": "GATEWAY_DESCRIPTION",
+    "version": "GATEWAY_VERSION",
+    "api-group-id": "GATEWAY_API_GROUP_ID"
+}

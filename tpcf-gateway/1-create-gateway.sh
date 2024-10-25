@@ -1,0 +1,1 @@
+cf create-service p.gateway standard GATEWAY_NAME -c ./gateway.json
