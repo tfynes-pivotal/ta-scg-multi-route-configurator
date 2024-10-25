@@ -15,6 +15,10 @@ accelerator:
     label: Bar
     dataType: [BarType]
 
+  - name: foobar
+    label: FooBar
+    dataType: FooBarType
+
 
   # - name: serviceConfiguration
   #   label: Service Configuration
@@ -226,6 +230,13 @@ accelerator:
           dataType: string
         - name: bar2
           dataType: string
+
+    - name: FooBarType
+      struct:
+        - name: foo
+          dataType: FooType
+        - name: bar
+          dataType: BarType
    
     - name: ServiceConfigType
       struct:
