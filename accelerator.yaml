@@ -9,7 +9,7 @@ accelerator:
 
   - name: serviceConfiguration
     label: Service Configuration
-    dataType: ServiceConfigType
+    inputType: text
     #defaultValue: [{"serviceName":"foo","servicePrefixPath":"/cp/**","serviceFilters":["StripPrefix=1"],"routes":[{ "path":"/**","method":"GET,PUT,POST,PATCH,DELETE","filters":["0"],"order":"10"}]}]
   
 
