@@ -213,7 +213,7 @@ accelerator:
         - name: serviceFilters
           dataType: [string]
         - name: routes
-          dataType: [Route]
+          dataType: Route
           label: Route Config Override
           display: true
 
