@@ -1,5 +1,5 @@
 accelerator:
-  displayName: TAP Gateway Multi-Route Configurator
+  displayName: TAP Gateway Multi-Route Configurator-m
   description: Generates Spring Cloud Gateway deployment definition for operator based deployments in TAP clusters
   tags:
   - beta
@@ -7,9 +7,9 @@ accelerator:
 
   options:
 
-  - name: services
-    label: services test
-    dataType: [ServiceType]
+  # - name: services
+  #   label: services test
+  #   dataType: [ServiceType]
 
 
   # - name: serviceConfiguration
@@ -43,7 +43,28 @@ accelerator:
     defaultValue: cpfacade
     dependsOn: 
       name: createGateway
+      value: true
+
+  - name: specifyGatewayBaseUrls
+    label: "Gateway Configuration: Specify Mutiple 'base-urls'"
+    display: true
+    dataType: boolean
+    inputType: checkbox
+    defaultValue: true
+    dependsOn: 
+      name: createGateway
       value: true 
+
+  - name: gatewayBaseUrls
+    label: "Gateway Configuration: Gateway base-urls"
+    description: "Specify multiple FQDNs for gateway to listen on"
+    display: true
+    dataType: [string]
+    defaultValue: ["cp-router.homelab.fynesy.com","inv-router.homelab.fynesy.com"]
+    dependsOn: 
+      name: specifyGatewayBaseUrls
+      value: true
+
 
   - name: gatewayTitle
     label: "Gateway Configuration: API Group Title"
@@ -80,6 +101,37 @@ accelerator:
     dependsOn: 
       name: createGateway
       value: true 
+  
+  - name: gatewaySecured
+    label: "SSO Protect Gateway"
+    description: oAuth Gateway protection using SSO-Serivce instance
+    display: true
+    dataType: boolean
+    inputType: checkbox
+    defaultValue: false
+    dependsOn:
+      name: createGateway
+      value: true
+
+  - name: ssoPlan
+    label: tPCF SSO Serivce Instance Name
+    description: Provides indentity provider details to gateway
+    display: true
+    dataType: string
+    defaultValue: internal
+    dependsOn:
+      name: gatewaySecured
+      value: true
+
+  - name: ssoScopes
+    label: Service SSO Scopes List
+    description: List of SSO scopes gateway is permitted to use
+    display: true
+    dataType: [string]
+    defaultValue: ["openid","group1","group2"]
+    dependsOn:
+      name: gatewaySecured
+      value: true
 
 ##########################################################################################################
 
@@ -97,6 +149,24 @@ accelerator:
     display: true
     inputType: text
     defaultValue: "/cp"
+
+  - name: specifyPredicateHost
+    label: "Service Configuration: Specify Host"
+    description: "Route to service based on hostname/domain matching"
+    display: true
+    dataType: boolean
+    inputType: checkbox
+    defaultValue: false
+
+  - name: servicePredicateHost
+    label: "Service Configuration: Host Predicate"
+    description: "Gateway FQDN listener match with ** wildcard"
+    defaultValue: "cp-router.homelab.fynesy.com"
+    display: true
+    inputType: text
+    dependsOn:
+      name: specifyPredicateHost
+      value: true
 
   # - name: serviceStripPrefixEnabled
   #   label: "Service Configuration: Strip-prefix override"
@@ -138,8 +208,8 @@ accelerator:
   - name: routesArray
     label: "Route Configuration: override"
     description: "Path/Method match service methods to provide additional configuration"
-    dataType: [Route]
-  #   defaultValue: [{ "path":"/**","method":"GET,PUT,POST,PATCH,DELETE","filters":["StripPrefix=0"],"order":"10"}]
+    dataType: [RouteType]
+    defaultValue: [{ "path":"/**","method":"GET,PUT,POST,PATCH,DELETE","filters":["StripPrefix=0"],"order":"10"}]
 
 
   
@@ -232,25 +302,27 @@ accelerator:
         - name: filters
           dataType: [string]
           label: "Filters"
+          description: Filters list for route; e.g. 'SsoLogin' and 'Scopes=group1'
         - name: order
           datatype: string
           label: Route Priority
 
 
-    - name: Route
-      struct:
-        - name: path
-          dataType: string
-          label: "Match Rule: Context / Path"
-        - name: method 
-          dataType: string
-          label: "Match Rule: HTTP Verbs"
-        - name: filters
-          dataType: [string]
-          label: "Filters"
-        - name: order
-          datatype: string
-          label: Route Priority
+    # - name: Route
+    #   struct:
+    #     - name: path
+    #       dataType: string
+    #       label: "Match Rule: Context / Path"
+    #     - name: method 
+    #       dataType: string
+    #       label: "Match Rule: HTTP Verbs"
+    #     - name: filters
+    #       dataType: [string]
+    #       label: "Filters"
+    #       description: Filters list for route; e.g. 'SsoLogin' and 'Scopes=group1'
+    #     - name: order
+    #       datatype: string
+    #       label: Route Priority
 
    
     - name: ServiceConfigType
@@ -282,7 +354,6 @@ engine:
 #!   Update ingress-domain, github gitops repo url, name & branch, tlsMode
 
 
-
   chain:
   - merge:
     - include: ['**']
@@ -308,8 +379,8 @@ engine:
           with: "#routesArray.toString()"
       - merge:
         - include: ["**"]
-          exclude: ['tpcf-gateway/routeConfig.yaml']
-        - include: ['tpcf-gateway/routeConfig.yaml']
+          exclude: ['tpcf-gateway/*.yaml']
+        - include: ['tpcf-gateway/*.yaml']
           chain:
           - type: YTT
       - merge:

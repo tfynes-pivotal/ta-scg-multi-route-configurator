@@ -2,7 +2,13 @@
 ---
 service:
   filters: #@ data.values.serviceFilters
+  #@ if data.values.servicePredicatePath != "":
   pathPrefix: #@ data.values.servicePredicatePath
+  #@ end
+  #@ if data.values.specifyPredicateHost: 
+  predicates: 
+  - #@ "Host=" + data.values.servicePredicateHost
+  #@ end
 openapi:
-  location: https://cp.homelab.fynesy.com/api-docs
+  location: #@ data.values.serviceOpenApiUrl
 routes: #@ data.values.routesArray
