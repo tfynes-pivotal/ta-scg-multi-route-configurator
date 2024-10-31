@@ -7,15 +7,15 @@ accelerator:
 
   options:
 
-  # - name: services
-  #   label: services test
-  #   dataType: [ServiceType]
+  #! - name: services
+  #!   label: services test
+  #!   dataType: [ServiceType]
 
 
-  # - name: serviceConfiguration
-  #   label: Service Configuration
-  #   dataType: ServiceConfigType
-    #defaultValue: [{"serviceName":"foo","servicePrefixPath":"/cp/**","serviceFilters":["StripPrefix=1"],"routes":[{ "path":"/**","method":"GET,PUT,POST,PATCH,DELETE","filters":["0"],"order":"10"}]}]
+  #! - name: serviceConfiguration
+  #!   label: Service Configuration
+  #!   dataType: ServiceConfigType
+  #! #defaultValue: [{"serviceName":"foo","servicePrefixPath":"/cp/**","serviceFilters":["StripPrefix=1"],"routes":[{ "path":"/**","method":"GET,PUT,POST,PATCH,DELETE","filters":["0"],"order":"10"}]}]
   
 
 
@@ -249,7 +249,7 @@ accelerator:
     label: "Route Configuration: override"
     description: "Path/Method match service methods to provide additional configuration"
     dataType: [RouteType]
-    defaultValue: [{ "path":"/**","method":"GET,PUT,POST,PATCH,DELETE,OPTIONS","filters":["StripPrefix=0"],"order":"10"}]
+    defaultValue: [{ "path":"/**","method":"GET,PUT,POST,PATCH,DELETE,OPTIONS,HEAD,TRACE","filters":["StripPrefix=0"],"order":"10"}]
 
 ##########################################################################################################
 # CORS WORKAROUND
@@ -269,6 +269,7 @@ accelerator:
     description: "Add new routes to the gateway"
     display: true
     dataType: [RouteType]
+    defaultValue: [{ "path":"/**","method":"OPTIONS","filters":["StripPrefix=0"],"order":"100"}]
     dependsOn:
      name: additionalRoutesEnabled
      value: true
@@ -365,21 +366,21 @@ engine:
         substitutions:
         - text: GATEWAY_NAME
           with: "#gatewayName"
-        - text: GATEWAY_HOSTNAME
-          with: "#gatewayHostname"
-        - text: IMPLEMENTATION_OPENAPI_URL
-          with: "#serviceOpenApiUrl"
+        #! - text: GATEWAY_HOSTNAME
+        #!   with: "#gatewayHostname"
+        #! - text: IMPLEMENTATION_OPENAPI_URL
+        #!   with: "#serviceOpenApiUrl"
         - text: OPENAPI_TO_ROUTE_CONVERSTION_SERVICE_ENDPOINT
           with: "#openApiToRouteConfigConversionServiceEndpoint"
         - text: SERVICE_TO_FACADE_APP_NAME
           with: "#serviceAppName"
-        # - text: SERVICE_STRIP_PREFIX_VALUE
-        #   with: "#serviceStripPrefixValue"
-        - text: SERVICE_PREDICATE_PATH
-          with: "#servicePredicatePath"
+        #! - text: SERVICE_STRIP_PREFIX_VALUE
+        #!   with: "#serviceStripPrefixValue"
+        #! - text: SERVICE_PREDICATE_PATH
+        #!   with: "#servicePredicatePath"
 
-        - text: ROUTES_TEST
-          with: "#routesArray.toString()"
+        #! - text: ROUTES_TEST
+        #!   with: "#routesArray.toString()"
       - merge:
         - include: ["**"]
           exclude: ['tpcf-gateway/gateway.yaml']
@@ -394,26 +395,44 @@ engine:
           - type: YTT
       - merge:
         - include: ["**"]
-          exclude: ['tpcf-gateway/additionalRoutes.yaml']
-        - include: ['tpcf-gateway/additionalRoutes.yaml']
+          exclude: ['tpcf-gateway/route-additions-data.yaml']
+        - include: ['tpcf-gateway/route-additions-data.yaml']
           chain:
           - type: YTT
+        condition: "#additionalRoutesEnabled"      
+
       - merge:
         - include: ["**"]
-          exclude: ['tpcf-gateway/**']
-        - include: ['tpcf-gateway/**']
+          exclude: ['tpcf-gateway/*.sh']
+        - include: ['tpcf-gateway/*.sh']   
           chain:
           - type: ReplaceText
             substitutions:
-            - text: GATEWAY_TITLE
-              with: "#gatewayTitle"
-            - text: GATEWAY_DESCRIPTION
-              with: "#gatewayDescription"
-            - text: GATEWAY_VERSION
-              with: "#gatewayVersion"
-            - text: GATEWAY_API_GROUP_ID
-              with: "#gatewayApiGroupId"
-            condition: "#createGateway"
+            - text: "#CORS-FIX# "
+              with: "''"
+            condition: "#gatewayCorsEnabled"
+          - type: ReplaceText
+            substitutions:
+            - text: "#DEFAULT# "
+              with: "''"
+            condition: "#gatewayCorsEnabled != true"
+
+      #! - merge:
+      #!   - include: ["**"]
+      #!     exclude: ['tpcf-gateway/**']
+      #!   - include: ['tpcf-gateway/**']
+      #!     chain:
+      #!     - type: ReplaceText
+      #!       substitutions:
+      #!       - text: GATEWAY_TITLE
+      #!         with: "#gatewayTitle"
+      #!       - text: GATEWAY_DESCRIPTION
+      #!         with: "#gatewayDescription"
+      #!       - text: GATEWAY_VERSION
+      #!         with: "#gatewayVersion"
+      #!       - text: GATEWAY_API_GROUP_ID
+      #!         with: "#gatewayApiGroupId"
+      #!       condition: "#createGateway"
   
   - exclude: ['notes.txt']
     include: ['**']
@@ -424,7 +443,7 @@ engine:
   - exclude: ['tpcf-gateway/unused/**']
     include: ['**']
 
-  - exclude: ['tpcf-gateway/1-create-gateway.sh','tpcf-gateway/gateway.json']
+  - exclude: ['tpcf-gateway/1-create-gateway.sh','tpcf-gateway/gateway.json', 'tpcf-gateway/gateway.yaml']
     include: ['**']
     condition: "#createGateway != true"
   
