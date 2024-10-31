@@ -1,3 +1,5 @@
 ytt -f routeConfig.yaml --output json | jq . > routeConfig.json
 curl --request POST 'OPENAPI_TO_ROUTE_CONVERSTION_SERVICE_ENDPOINT' \
 --header 'Content-Type: application/json' -d @routeConfig.json | jq . > ./route.json
+cp route.json route.yaml
+ytt -f ./route.yaml -f ./route-cors-config-overlay.yaml --output json | jq . > route-cors-enabled.json

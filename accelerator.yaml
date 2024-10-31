@@ -1,5 +1,5 @@
 accelerator:
-  displayName: TAP Gateway Multi-Route Configurator-m
+  displayName: TAP Gateway Multi-Route Configurator-
   description: Generates Spring Cloud Gateway deployment definition for operator based deployments in TAP clusters
   tags:
   - beta
@@ -27,6 +27,8 @@ accelerator:
     defaultValue: cpfacade
 
 ##########################################################################################################
+# GATEWAY INSTANCE CONFIGURATION
+
 
   - name: createGateway
     label: Create Gateway Instance
@@ -45,12 +47,22 @@ accelerator:
       name: createGateway
       value: true
 
+  - name: gatewayCount
+    label: "Gateway Configuration: Instance Count"
+    display: true
+    inputType: text
+    defaultValue: "1"
+    dependsOn: 
+      name: createGateway
+      value: true
+
+
   - name: specifyGatewayBaseUrls
     label: "Gateway Configuration: Specify Mutiple 'base-urls'"
     display: true
     dataType: boolean
     inputType: checkbox
-    defaultValue: true
+    defaultValue: false
     dependsOn: 
       name: createGateway
       value: true 
@@ -103,7 +115,7 @@ accelerator:
       value: true 
   
   - name: gatewaySecured
-    label: "SSO Protect Gateway"
+    label: "Gateway Configuration: Enable SSO"
     description: oAuth Gateway protection using SSO-Serivce instance
     display: true
     dataType: boolean
@@ -114,7 +126,7 @@ accelerator:
       value: true
 
   - name: ssoPlan
-    label: tPCF SSO Serivce Instance Name
+    label: "Gateway Configuration: SSO tPCF Plan Name"
     description: Provides indentity provider details to gateway
     display: true
     dataType: string
@@ -124,7 +136,7 @@ accelerator:
       value: true
 
   - name: ssoScopes
-    label: Service SSO Scopes List
+    label: "Gateway Configuration: SSO Scopes List"
     description: List of SSO scopes gateway is permitted to use
     display: true
     dataType: [string]
@@ -133,15 +145,60 @@ accelerator:
       name: gatewaySecured
       value: true
 
-##########################################################################################################
+  - name: gatewayCorsEnabled
+    label: "Gateway Configuration: Enable CORS"
+    description: CORS configuration - needed for gateway to allow requests from api-portal 
+    display: true
+    dataType: boolean
+    inputType: checkbox
+    defaultValue: false
+    dependsOn:
+      name: createGateway
+      value: true
 
-  # - name: exposeService
-  #   label: Expose Backend Service
-  #   description: Generate Gateway Route from OpenAPI endpoint
-  #   display: true
-  #   dataType: boolean
-  #   inputType: checkbox
-  #   defaultValue: false
+  - name: gatewayCorsAllowedOrigins
+    label: "Gateway Configuration: allowed-origins"
+    description: "List of 'origin' FQDNs permitted to invoke gateway - e.g. api-portal FQDN"
+    display: true
+    dataType: [string]
+    defaultValue: ["*"]
+    dependsOn:
+      name: gatewayCorsEnabled
+      value: true
+
+  - name: gatewayCorsAllowedMethods
+    label: "Gateway Configuration: allowed-methods"
+    description: "List of methods permitted to invoke gateway, from allowed origins"
+    display: true
+    dataType: [string]
+    defaultValue: ["GET","PUT","POST","DELETE","PATCH","HEAD","OPTIONS","TRACE"]
+    dependsOn:
+      name: gatewayCorsEnabled
+      value: true
+
+  - name: gatewayCorsAllowedHeaders
+    label: "Gateway Configuration: allowed-headers"
+    description: "List of headers permitted to invoke gateway - from allowed origins"
+    display: true
+    dataType: [string]
+    defaultValue: ["*"]
+    dependsOn:
+      name: gatewayCorsEnabled
+      value: true
+
+  - name: gatewayCorsAllowCredentials
+    label: "Gateway Configuration: allow-credentials"
+    description: "Allow credentials to be sent from allowed origins - note cannot use with wildcard origin"
+    dataType: boolean
+    inputType: checkbox
+    defaultValue: false
+    dependsOn:
+      name: gatewayCorsEnabled
+      value: true
+
+
+##########################################################################################################
+# SERVICE / ROUTE CONFIGURATION
 
   - name: servicePredicatePath
     label: "Service Configuration: Path Predicate"
@@ -168,23 +225,6 @@ accelerator:
       name: specifyPredicateHost
       value: true
 
-  # - name: serviceStripPrefixEnabled
-  #   label: "Service Configuration: Strip-prefix override"
-  #   description: "Non-default (<1 or >1) prefix path count"
-  #   display: true
-  #   dataType: boolean
-  #   inputType: checkbox
-  #   defaultValue: false
-
-  # - name: serviceStripPrefixValue
-  #   label: "Service Configuration: Strip Prefix Count"
-  #   display: true
-  #   inputType: text
-  #   defaultValue: "0"
-  #   dependsOn:
-  #     name: serviceStripPrefixEnabled
-  #     value: true
-
   - name: serviceFilters
     label: "Service Configuration: Filters"
     display: true
@@ -209,50 +249,32 @@ accelerator:
     label: "Route Configuration: override"
     description: "Path/Method match service methods to provide additional configuration"
     dataType: [RouteType]
-    defaultValue: [{ "path":"/**","method":"GET,PUT,POST,PATCH,DELETE","filters":["StripPrefix=0"],"order":"10"}]
+    defaultValue: [{ "path":"/**","method":"GET,PUT,POST,PATCH,DELETE,OPTIONS","filters":["StripPrefix=0"],"order":"10"}]
 
+##########################################################################################################
+# CORS WORKAROUND
 
-  
+##########################################################################################################
+# ADDITIONAL ROUTES
+  - name: additionRoutesEnabled
+    label: "Route Direct-Configuration: Add New Routes"
+    description: Add routes independent of backing service api-docs impports (e.g. CORS OPTIONS Routes)
+    display: true
+    dataType: boolean
+    inputType: checkbox
+    defaultValue: false
 
-  # - name: route1Methods
-  #   label: Route1 HTTP Verbs to Route
-  #   description: HTTP Verbs to route;
+  # - name: additionalRoutes
+  #   label: "Route Direct-Configuration: Route"
   #   display: true
-  #   inputType: text
-  #   defaultValue: "*"
+  #   dataType: string
   #   dependsOn:
-  #     name: createRoute
+  #   - name: additionalRoutesEnabled
   #     value: true
 
-  # - name: route1Path
-  #   label: Route1 Context
-  #   description: Context on which to route traffic to this service
-  #   display: true
-  #   inputType: text
-  #   defaultValue: "/**"
-  #   dependsOn:
-  #     name: createRoute
-  #     value: true
 
-  # - name: route1StripPrefixValue
-  #   label: Route1 Strip Prefix Count
-  #   description: How many top level context prefixes to remove before delegating traffic to downstream service
-  #   display: true
-  #   inputType: text
-  #   defaultValue: "0"
-  #   dependsOn:
-  #     name: createRoute
-  #     value: true
-
-  # - name: route1Order
-  #   label: Route1 Order
-  #   description: Set Route Priority
-  #   display: true
-  #   inputType: text
-  #   defaultValue: "10"
-  #   dependsOn:
-  #     name: createRoute
-  #     value: true
+##########################################################################################################
+# PLATFORM CONFIGURATION
 
   - name: platformConfiguration
     label: Platform Endpoint Configuration
@@ -308,22 +330,6 @@ accelerator:
           label: Route Priority
 
 
-    # - name: Route
-    #   struct:
-    #     - name: path
-    #       dataType: string
-    #       label: "Match Rule: Context / Path"
-    #     - name: method 
-    #       dataType: string
-    #       label: "Match Rule: HTTP Verbs"
-    #     - name: filters
-    #       dataType: [string]
-    #       label: "Filters"
-    #       description: Filters list for route; e.g. 'SsoLogin' and 'Scopes=group1'
-    #     - name: order
-    #       datatype: string
-    #       label: Route Priority
-
    
     - name: ServiceConfigType
       struct:
@@ -333,10 +339,6 @@ accelerator:
           dataType: string
         - name: serviceFilters
           dataType: [string]
-    #     - name: routes
-    #       dataType: Route
-    #       label: Route Config Override
-    #       display: true
 
 
 
@@ -379,8 +381,14 @@ engine:
           with: "#routesArray.toString()"
       - merge:
         - include: ["**"]
-          exclude: ['tpcf-gateway/*.yaml']
-        - include: ['tpcf-gateway/*.yaml']
+          exclude: ['tpcf-gateway/gateway.yaml']
+        - include: ['tpcf-gateway/gateway.yaml']
+          chain:
+          - type: YTT
+      - merge:
+        - include: ["**"]
+          exclude: ['tpcf-gateway/routeConfig.yaml']
+        - include: ['tpcf-gateway/routeConfig.yaml']
           chain:
           - type: YTT
       - merge:

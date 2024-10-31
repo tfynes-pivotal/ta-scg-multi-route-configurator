@@ -5,6 +5,9 @@ base-urls: #@ data.values.gatewayBaseUrls
 #@ else:
 host: #@ data.values.gatewayHostname
 #@ end
+#@ if data.values.gatewayCount != "1":
+count: #@ data.values.gatewayCount
+#@ end
 title: #@ data.values.gatewayTitle
 description: #@ data.values.gatewayDescription
 version: #@ data.values.gatewayVersion
@@ -13,4 +16,15 @@ api-group-id: #@ data.values.gatewayApiGroupId
 sso:
   plan: #@ data.values.ssoPlan
   scopes: #@ data.values.ssoScopes
+#@ end
+#@ if data.values.gatewayCorsEnabled:
+cors:
+  allowed-origins: #@ data.values.gatewayCorsAllowedOrigins
+  allowed-methods: #@ data.values.gatewayCorsAllowedMethods
+  allowed-headers: #@ data.values.gatewayCorsAllowedHeaders
+  #@ if data.values.gatewayCorsAllowCredentials:
+  allow-credentials: true
+  #@ else:
+  allow-credentials: false
+  #@ end
 #@ end

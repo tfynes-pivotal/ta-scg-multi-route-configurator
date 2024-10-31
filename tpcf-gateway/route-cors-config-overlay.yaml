@@ -1,0 +1,20 @@
+#@ load("@ytt:overlay","overlay")
+
+#@overlay/match by=overlay.all
+---
+routes:
+  - order: 10
+    method: OPTIONS
+    path: /api/customer-profiles/**
+    filters:
+    - StripPrefix=0
+    model: {}
+
+
+
+  #@overlay/match by=overlay.all, expects="1+"
+  - 
+    #@overlay/match missing_ok=True
+    filters:
+    - "DedupeResponseHeader=Access-Control-Allow-Origin Access-Control-Allow-Credentials, RETAIN_FIRST"
+  
