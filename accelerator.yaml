@@ -413,9 +413,9 @@ engine:
             condition: "#gatewayCorsEnabled"
           - type: ReplaceText
             substitutions:
-            - text: "#DEFAULT# "
+            - text: "#ADDITIONAL-ROUTES# "
               with: "''"
-            condition: "#gatewayCorsEnabled != true"
+            condition: "#additionalRoutesEnabled"
 
       #! - merge:
       #!   - include: ["**"]

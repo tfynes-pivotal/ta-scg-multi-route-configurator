@@ -1,2 +1,1 @@
-#DEFAULT# cf unbind-service SERVICE_TO_FACADE_APP_NAME GATEWAY_NAME && cf bind-service SERVICE_TO_FACADE_APP_NAME GATEWAY_NAME -c route.json
-#CORS-FIX# cf unbind-service SERVICE_TO_FACADE_APP_NAME GATEWAY_NAME && cf bind-service SERVICE_TO_FACADE_APP_NAME GATEWAY_NAME -c route-cors-enabled.json
+cf unbind-service SERVICE_TO_FACADE_APP_NAME GATEWAY_NAME && cf bind-service SERVICE_TO_FACADE_APP_NAME GATEWAY_NAME -c route.json
