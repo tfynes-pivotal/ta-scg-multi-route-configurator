@@ -256,7 +256,7 @@ accelerator:
 
 ##########################################################################################################
 # ADDITIONAL ROUTES
-  - name: additionRoutesEnabled
+  - name: additionalRoutesEnabled
     label: "Route Direct-Configuration: Add New Routes"
     description: Add routes independent of backing service api-docs impports (e.g. CORS OPTIONS Routes)
     display: true
@@ -264,13 +264,14 @@ accelerator:
     inputType: checkbox
     defaultValue: false
 
-  # - name: additionalRoutes
-  #   label: "Route Direct-Configuration: Route"
-  #   display: true
-  #   dataType: string
-  #   dependsOn:
-  #   - name: additionalRoutesEnabled
-  #     value: true
+  - name: additionalRoutes
+    label: "Route Direct-Configuration: Route"
+    description: "Add new routes to the gateway"
+    display: true
+    dataType: [RouteType]
+    dependsOn:
+     name: additionalRoutesEnabled
+     value: true
 
 
 ##########################################################################################################
@@ -393,6 +394,12 @@ engine:
           - type: YTT
       - merge:
         - include: ["**"]
+          exclude: ['tpcf-gateway/additionalRoutes.yaml']
+        - include: ['tpcf-gateway/additionalRoutes.yaml']
+          chain:
+          - type: YTT
+      - merge:
+        - include: ["**"]
           exclude: ['tpcf-gateway/**']
         - include: ['tpcf-gateway/**']
           chain:
@@ -420,3 +427,7 @@ engine:
   - exclude: ['tpcf-gateway/1-create-gateway.sh','tpcf-gateway/gateway.json']
     include: ['**']
     condition: "#createGateway != true"
+  
+  - exclude: ['tpcf-gateway/additionalRoutes.yaml']
+    include: ['**']
+    condition: "#additionalRoutesEnabled != true"
