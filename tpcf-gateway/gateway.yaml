@@ -28,3 +28,5 @@ cors:
   allow-credentials: false
   #@ end
 #@ end
+
+#! corsverbs: #@ ", ".join(data.values.gatewayCorsAllowedMethods)

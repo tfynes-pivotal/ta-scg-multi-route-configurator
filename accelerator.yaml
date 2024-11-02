@@ -47,6 +47,8 @@ accelerator:
       name: createGateway
       value: true
 
+
+
   - name: gatewayCount
     label: "Gateway Configuration: Instance Count"
     display: true
@@ -55,7 +57,6 @@ accelerator:
     dependsOn: 
       name: createGateway
       value: true
-
 
   - name: specifyGatewayBaseUrls
     label: "Gateway Configuration: Specify Mutiple 'base-urls'"
@@ -151,7 +152,7 @@ accelerator:
     display: true
     dataType: boolean
     inputType: checkbox
-    defaultValue: false
+    defaultValue: true
     dependsOn:
       name: createGateway
       value: true
@@ -165,6 +166,40 @@ accelerator:
     dependsOn:
       name: gatewayCorsEnabled
       value: true
+
+  # - name: gatewayCorsAllowedMethods
+  #   label: "Gateway Configuration: allowed-methods"
+  #   inputType: checkbox
+  #   dataType: [string]
+  #   defaultValue:
+  #     - GET
+  #     - POST
+  #     - PUT
+  #     - PATCH
+  #     - DELETE
+  #     - OPTIONS
+  #     - TRACE
+  #     - HEAD
+  #   choices:
+  #     - text: GET
+  #       value: GET
+  #     - text: POST
+  #       value: POST
+  #     - text: PUT
+  #       value: PUT
+  #     - text: PATCH
+  #       value: PATCH
+  #     - text: DELETE
+  #       value: DELETE
+  #     - text: OPTIONS
+  #       value: OPTIONS
+  #     - text: TRACE
+  #       value: TRACE
+  #     - text: HEAD
+  #       value: HEAD
+  #   dependsOn:
+  #     name: gatewayCorsEnabled
+  #     value: true    
 
   - name: gatewayCorsAllowedMethods
     label: "Gateway Configuration: allowed-methods"
@@ -191,7 +226,7 @@ accelerator:
     description: "Allow credentials to be sent from allowed origins - note cannot use with wildcard origin"
     dataType: boolean
     inputType: checkbox
-    defaultValue: false
+    defaultValue: true
     dependsOn:
       name: gatewayCorsEnabled
       value: true
@@ -245,11 +280,24 @@ accelerator:
     inputType: text
     defaultValue: "https://cp.homelab.fynesy.com/api-docs"
 
+  - name: routeConfigurationOverridesEnabled
+    label: "Apply Route Configuration Overides"
+    description: "Provide per-route additional configuration"
+    display: true
+    dataType: boolean
+    inputType: checkbox
+    defaultValue: false
+    
+
   - name: routesArray
     label: "Route Configuration: override"
     description: "Path/Method match service methods to provide additional configuration"
     dataType: [RouteType]
-    defaultValue: [{ "path":"/**","method":"GET,PUT,POST,PATCH,DELETE,OPTIONS,HEAD,TRACE","filters":["StripPrefix=0"],"order":"10"}]
+    defaultValue: [{ "path":"/**","method":"GET,POST,PUT,PATCH,DELETE,OPTIONS,TRACE,HEAD","filters":["StripPrefix=0"],"order":"10"}]
+    #!defaultValue: [{ "path":"/**","method":["GET","POST","PUT","PATCH","DELETE","OPTIONS","TRACE","HEAD"],"filters":["StripPrefix=0"],"order":"10"}]
+    # dependsOn:
+    #   name: routeConfigurationOverridesEnabled
+    #   value: true
 
 ##########################################################################################################
 # CORS WORKAROUND
@@ -257,7 +305,7 @@ accelerator:
 ##########################################################################################################
 # ADDITIONAL ROUTES
   - name: additionalRoutesEnabled
-    label: "Route Direct-Configuration: Add New Routes"
+    label: "Apply Direct-Configured Routes"
     description: Add routes independent of backing service api-docs impports (e.g. CORS OPTIONS Routes)
     display: true
     dataType: boolean
@@ -265,14 +313,14 @@ accelerator:
     defaultValue: false
 
   - name: additionalRoutes
-    label: "Route Direct-Configuration: Route"
+    label: "Direct-Configuration: Route"
     description: "Add new routes to the gateway"
     display: true
     dataType: [RouteType]
     defaultValue: [{ "path":"/**","method":"OPTIONS","filters":["StripPrefix=0"],"order":"100"}]
-    dependsOn:
-     name: additionalRoutesEnabled
-     value: true
+    # dependsOn:
+    #  name: additionalRoutesEnabled
+    #  value: true
 
 
 ##########################################################################################################
@@ -303,17 +351,16 @@ accelerator:
   
   types:
 
-
-    - name: ServiceType
-      struct:
-        - name: serviceName
-          dataType: string
-          label: Service Name
-          description: service name
-        - name: routes
-          dataType: [RouteType]
-          label: Routes
-          description: routes
+    # - name: ServiceType
+    #   struct:
+    #     - name: serviceName
+    #       dataType: string
+    #       label: Service Name
+    #       description: service name
+    #     - name: routes
+    #       dataType: [RouteType]
+    #       label: Routes
+    #       description: routes
 
     - name: RouteType
       struct:
@@ -330,6 +377,41 @@ accelerator:
         - name: order
           datatype: string
           label: Route Priority
+
+
+    # - name: RouteType2
+    #   struct:
+    #     - name: path
+    #       dataType: string
+    #       label: "Match Rule: Context/Path"
+    #     - name: method
+    #       label: "Match Rule: Method(s)"
+    #       dataType: [string]
+    #       inputType: checkbox
+    #       choices:
+    #         - text: GET
+    #           value: GET
+    #         - text: POST
+    #           value: POST
+    #         - text: PUT
+    #           value: PUT
+    #         - text: PATCH
+    #           value: PATCH
+    #         - text: DELETE
+    #           value: DELETE
+    #         - text: OPTIONS
+    #           value: OPTIONS
+    #         - text: TRACE
+    #           value: TRACE
+    #         - text: HEAD
+    #           value: HEAD
+    #     - name: filters
+    #       dataType: [string]
+    #       label: "Filters"
+    #       description: Filters list for route; e.g. 'SsoLogin' and 'Scopes=group1'
+    #     - name: order
+    #       datatype: string
+    #       label: Route Priority
 
 
    
@@ -399,7 +481,19 @@ engine:
         - include: ['tpcf-gateway/route-additions-data.yaml']
           chain:
           - type: YTT
-        condition: "#additionalRoutesEnabled"      
+        condition: "#additionalRoutesEnabled"
+
+### JSON NUMBER TYPE FIX = STRIPS THE QUOTES OF VALUE OF 'ORDER' ELEMENT IN JSON CONFIG
+      - merge:
+        - include: ["**"]
+          exclude: ['tpcf-gateway/route-additions-data.yaml','tpcf-gateway/routeConfig.yaml']
+        - include: ['tpcf-gateway/route-additions-data.yaml','tpcf-gateway/routeConfig.yaml']   
+          chain:
+          - type: ReplaceText
+            regex:
+              pattern: 'order:\s*\"(\d+)\"'
+              with: "'order: $1'"
+            condition: "#gatewayCorsEnabled"
 
       - merge:
         - include: ["**"]

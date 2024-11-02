@@ -11,4 +11,6 @@ service:
   #@ end
 openapi:
   location: #@ data.values.serviceOpenApiUrl
+#@ if data.values.routeConfigurationOverridesEnabled:
 routes: #@ data.values.routesArray
+#@ end
