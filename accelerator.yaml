@@ -374,9 +374,14 @@ accelerator:
           dataType: [string]
           label: "Filters"
           description: Filters list for route; e.g. 'SsoLogin' and 'Scopes=group1'
+        - name: tags
+          dataType: [string]
+          label: "Tags"
+          description: Tags
         - name: order
           datatype: string
           label: Route Priority
+
 
 
     # - name: RouteType2
