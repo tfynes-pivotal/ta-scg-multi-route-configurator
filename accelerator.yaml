@@ -1,23 +1,11 @@
 accelerator:
-  displayName: TAP Gateway Multi-Route Configurator-
+  displayName: TAP Gateway Multi-Route Configurator
   description: Generates Spring Cloud Gateway deployment definition for operator based deployments in TAP clusters
   tags:
   - beta
 
 
   options:
-
-  #! - name: services
-  #!   label: services test
-  #!   dataType: [ServiceType]
-
-
-  #! - name: serviceConfiguration
-  #!   label: Service Configuration
-  #!   dataType: ServiceConfigType
-  #! #defaultValue: [{"serviceName":"foo","servicePrefixPath":"/cp/**","serviceFilters":["StripPrefix=1"],"routes":[{ "path":"/**","method":"GET,PUT,POST,PATCH,DELETE","filters":["0"],"order":"10"}]}]
-  
-
 
   - name: gatewayName
     label: "tPCF Configuration: Gateway Service Name"
@@ -28,7 +16,6 @@ accelerator:
 
 ##########################################################################################################
 # GATEWAY INSTANCE CONFIGURATION
-
 
   - name: createGateway
     label: Create Gateway Instance
@@ -46,8 +33,6 @@ accelerator:
     dependsOn: 
       name: createGateway
       value: true
-
-
 
   - name: gatewayCount
     label: "Gateway Configuration: Instance Count"
@@ -148,7 +133,7 @@ accelerator:
 
   - name: gatewayCorsEnabled
     label: "Gateway Configuration: Enable CORS"
-    description: CORS configuration - needed for gateway to allow requests from api-portal 
+    description: CORS configuration - needed for gateway to allow requests from api-portal. Note allowed-origins cannot be wildcard if allowed-credentials is true. 
     display: true
     dataType: boolean
     inputType: checkbox
@@ -159,7 +144,7 @@ accelerator:
 
   - name: gatewayCorsAllowedOrigins
     label: "Gateway Configuration: allowed-origins"
-    description: "List of 'origin' FQDNs permitted to invoke gateway - e.g. api-portal FQDN"
+    description: "List of 'origin' FQDNs permitted to invoke gateway - e.g. api-portal FQDN *with https:// prefix*"
     display: true
     dataType: [string]
     defaultValue: ["*"]
@@ -167,46 +152,14 @@ accelerator:
       name: gatewayCorsEnabled
       value: true
 
-  # - name: gatewayCorsAllowedMethods
-  #   label: "Gateway Configuration: allowed-methods"
-  #   inputType: checkbox
-  #   dataType: [string]
-  #   defaultValue:
-  #     - GET
-  #     - POST
-  #     - PUT
-  #     - PATCH
-  #     - DELETE
-  #     - OPTIONS
-  #     - TRACE
-  #     - HEAD
-  #   choices:
-  #     - text: GET
-  #       value: GET
-  #     - text: POST
-  #       value: POST
-  #     - text: PUT
-  #       value: PUT
-  #     - text: PATCH
-  #       value: PATCH
-  #     - text: DELETE
-  #       value: DELETE
-  #     - text: OPTIONS
-  #       value: OPTIONS
-  #     - text: TRACE
-  #       value: TRACE
-  #     - text: HEAD
-  #       value: HEAD
-  #   dependsOn:
-  #     name: gatewayCorsEnabled
-  #     value: true    
-
   - name: gatewayCorsAllowedMethods
     label: "Gateway Configuration: allowed-methods"
     description: "List of methods permitted to invoke gateway, from allowed origins"
     display: true
-    dataType: [string]
-    defaultValue: ["GET","PUT","POST","DELETE","PATCH","HEAD","OPTIONS","TRACE"]
+    dataType: string
+    defaultValue: "GET,PUT,POST,DELETE,PATCH,HEAD,OPTIONS,TRACE"
+    #!dataType: [string]
+    #!defaultValue: ["GET","PUT","POST","DELETE","PATCH","HEAD","OPTIONS","TRACE"]
     dependsOn:
       name: gatewayCorsEnabled
       value: true
@@ -226,7 +179,7 @@ accelerator:
     description: "Allow credentials to be sent from allowed origins - note cannot use with wildcard origin"
     dataType: boolean
     inputType: checkbox
-    defaultValue: true
+    defaultValue: false
     dependsOn:
       name: gatewayCorsEnabled
       value: true
@@ -235,20 +188,35 @@ accelerator:
 ##########################################################################################################
 # SERVICE / ROUTE CONFIGURATION
 
+
+  - name: generateRouteConfigFromServiceDoc
+    label: Generate Route Configuration from Service API-Doc
+    description: Generates Gateway route configuration by importing OpenAPI docs from backing service
+    display: true
+    dataType: boolean
+    inputType: checkbox
+    defaultValue: true
+
   - name: servicePredicatePath
-    label: "Service Configuration: Path Predicate"
-    description: "Configure service to be accessible via a 'path-prefix' via the service gateway. E.g. when facading multiple services with single gateway"
+    label: "Service Configuration: Route by Path"
+    description: "Configure service to be accessible via a 'path-prefix' via the service gateway. Leave blank and set StripPrefix=0 for direct routing"
     display: true
     inputType: text
     defaultValue: "/cp"
+    dependsOn:
+      name: generateRouteConfigFromServiceDoc
+      value: true
 
   - name: specifyPredicateHost
-    label: "Service Configuration: Specify Host"
+    label: "Service Configuration: Route by Host"
     description: "Route to service based on hostname/domain matching"
     display: true
     dataType: boolean
     inputType: checkbox
     defaultValue: false
+    dependsOn:
+      name: generateRouteConfigFromServiceDoc
+      value: true
 
   - name: servicePredicateHost
     label: "Service Configuration: Host Predicate"
@@ -265,6 +233,9 @@ accelerator:
     display: true
     dataType: [string]
     defaultValue: ["StripPrefix=1"]
+    dependsOn:
+      name: generateRouteConfigFromServiceDoc
+      value: true
 
   - name: serviceAppName
     label: "Service Configuration: tPCF Application Name"
@@ -279,6 +250,9 @@ accelerator:
     display: true
     inputType: text
     defaultValue: "https://cp.homelab.fynesy.com/api-docs"
+    dependsOn:
+      name: generateRouteConfigFromServiceDoc
+      value: true
 
   - name: routeConfigurationOverridesEnabled
     label: "Apply Route Configuration Overides"
@@ -287,6 +261,9 @@ accelerator:
     dataType: boolean
     inputType: checkbox
     defaultValue: false
+    dependsOn:
+      name: generateRouteConfigFromServiceDoc
+      value: true
     
 
   - name: routesArray
@@ -441,9 +418,12 @@ accelerator:
 
 engine: 
 
+#!  let:
+#!  - name: gatewayCorsAllowedMethodsString
+#!    expression: "'GET,POST,PUT,PATCH,DELETE,OPTIONS,TRACE,HEAD'"
+#!   expression: 'T(String).valueOf(#gatewayCorsAllowedMethodsString).split(",")'
 #! Start with global search & replace for text substitutions
 #!   Update ingress-domain, github gitops repo url, name & branch, tlsMode
-
 
   chain:
   - merge:

@@ -20,7 +20,7 @@ sso:
 #@ if data.values.gatewayCorsEnabled:
 cors:
   allowed-origins: #@ data.values.gatewayCorsAllowedOrigins
-  allowed-methods: #@ data.values.gatewayCorsAllowedMethods
+  allowed-methods: #@ data.values.gatewayCorsAllowedMethods.split(",")
   allowed-headers: #@ data.values.gatewayCorsAllowedHeaders
   #@ if data.values.gatewayCorsAllowCredentials:
   allow-credentials: true
