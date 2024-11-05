@@ -1,0 +1,8 @@
+#@ load("@ytt:overlay","overlay")
+#@overlay/match by=overlay.all
+---
+routes:
+  #@overlay/append
+(@ load("@ytt:data","data") @)
+(@ load("@ytt:yaml","yaml") @)
+(@=yaml.encode(data.values.routes)@)

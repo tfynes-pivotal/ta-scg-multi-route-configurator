@@ -293,7 +293,7 @@ accelerator:
     label: "Route Configuration: override"
     description: "Path/Method match service methods to provide additional configuration"
     dataType: [RouteType]
-    defaultValue: [{ "path":"/**","method":"GET,POST,PUT,PATCH,DELETE,OPTIONS,TRACE,HEAD","filters":["StripPrefix=0"],"order":"10"}]
+    defaultValue: [{ "path":"/**","method":"GET,POST,PUT,PATCH,DELETE,OPTIONS,TRACE,HEAD","filters":["StripPrefix=0"],"tags":[],"order":"10"}]
     #!defaultValue: [{ "path":"/**","method":["GET","POST","PUT","PATCH","DELETE","OPTIONS","TRACE","HEAD"],"filters":["StripPrefix=0"],"order":"10"}]
     # dependsOn:
     #   name: routeConfigurationOverridesEnabled
@@ -317,7 +317,7 @@ accelerator:
     description: "Add new routes to the gateway"
     display: true
     dataType: [RouteType]
-    defaultValue: [{ "path":"/**","method":"OPTIONS","filters":["StripPrefix=0"],"order":"100"}]
+    defaultValue: [{ "path":"/**","method":"OPTIONS","filters":["StripPrefix=0"],"tags":[],"order":"100"}]
     # dependsOn:
     #  name: additionalRoutesEnabled
     #  value: true
@@ -546,6 +546,10 @@ engine:
     include: ['**']
     condition: "#createGateway != true"
   
-  - exclude: ['tpcf-gateway/additionalRoutes.yaml']
+  - exclude: ['tpcf-gateway/additionalRoutes.yaml','tpcf-gateway/route-additions-data.yaml','tpcf-gateway/route-additions-overlay-template.yaml']
     include: ['**']
     condition: "#additionalRoutesEnabled != true"
+
+  - exclude: ['tpcf-gateway/route-cors-config-overlay.yaml']
+    include: ['**']
+    condition: "#gatewayCorsEnabled != true"

@@ -1,0 +1,19 @@
+#@ load("@ytt:overlay","overlay")
+#@overlay/match by=overlay.all
+---
+routes:
+  #@overlay/append
+
+
+- path: /**
+  method: OPTIONS
+  filters:
+  - StripPrefix=0
+  tags: []
+  order: 100
+- path: /foo/**
+  method: GET
+  filters:
+  - StripPrefix=0
+  tags: []
+  order: 100
