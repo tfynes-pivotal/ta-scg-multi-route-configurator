@@ -425,7 +425,7 @@ engine:
             regex:
               pattern: 'order:\s*\"(\d+)\"'
               with: "'order: $1'"
-            condition: "#gatewayCorsEnabled"
+            condition: "#gatewayCorsEnabled or #additionalRoutesEnabled"
 
       - merge:
         - include: ["**"]
@@ -452,6 +452,16 @@ engine:
             - text: "#NO-CONVERT-SERVICE-DOC# "
               with: "''"
             condition: "#generateRouteConfigFromServiceDoc == false"
+          - type: ReplaceText
+            substitutions:
+            - text: "#GENERATE_RC_FROM_DOC# "
+              with: "''"
+            condition: "#generateRouteConfigFromServiceDoc"
+          - type: ReplaceText
+            substitutions:
+            - text: "#NO_GENERATE_RC_FROM_DOC# "
+              with: "''"
+            condition: "#generateRouteConfigFromServiceDoc == false"
 
   
   - exclude: ['notes.txt']
@@ -474,3 +484,9 @@ engine:
   - exclude: ['tpcf-gateway/route-cors-config-overlay.yaml']
     include: ['**']
     condition: "#gatewayCorsEnabled != true"
+
+  - exclude: ['tpcf-gateway/routeConfig.yaml']
+    include: ['**']
+    condition: "#generateRouteConfigFromServiceDoc != true"
+  
+

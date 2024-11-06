@@ -1,6 +1,6 @@
 #CONVERT-SERVICE-DOC# ytt -f routeConfig.yaml --output json | jq . > routeConfig.json
 #CONVERT-SERVICE-DOC# curl --request POST 'OPENAPI_TO_ROUTE_CONVERSTION_SERVICE_ENDPOINT' --header 'Content-Type: application/json' -d @routeConfig.json | jq . > ./route.json
-#NO-CONVERT-SERVICE-DOC# touch route.json
+#NO-CONVERT-SERVICE-DOC# echo '{"routes": []}' > route.json
 
 
 #CORS-FIX# cp route.json route-no-cors-fixes.json
