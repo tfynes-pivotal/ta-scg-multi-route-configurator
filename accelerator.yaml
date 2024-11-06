@@ -8,11 +8,18 @@ accelerator:
   options:
 
   - name: gatewayName
-    label: "tPCF Configuration: Gateway Service Name"
+    label: "tPCF: Gateway Service Name"
     description: Name for tPCF SpringCloudGateway service instance
     display: true
     inputType: text
     defaultValue: cpfacade
+
+  - name: serviceAppName
+    label: "tPCF: Backing Application Name"
+    description: Application to 'bind' to gateway service
+    display: true
+    inputType: text
+    defaultValue: "cp"
 
 ##########################################################################################################
 # GATEWAY INSTANCE CONFIGURATION
@@ -82,20 +89,22 @@ accelerator:
       name: createGateway
       value: true 
 
-  - name: gatewayVersion
-    label: "Gateway Configuration: API Group Version"
-    display: true
-    inputType: text
-    defaultValue: "0.0.1"
-    dependsOn: 
-      name: createGateway
-      value: true 
+  
 
   - name: gatewayApiGroupId
     label: "Gateway Configuration: API Group ID"
     display: true
     inputType: text
     defaultValue: "tPCF Auto-Managed Services"
+    dependsOn: 
+      name: createGateway
+      value: true 
+
+  - name: gatewayVersion
+    label: "Gateway Configuration: API Group Version"
+    display: true
+    inputType: text
+    defaultValue: "0.0.1"
     dependsOn: 
       name: createGateway
       value: true 
@@ -137,7 +146,7 @@ accelerator:
     display: true
     dataType: boolean
     inputType: checkbox
-    defaultValue: true
+    defaultValue: false
     dependsOn:
       name: createGateway
       value: true
@@ -203,9 +212,9 @@ accelerator:
     display: true
     inputType: text
     defaultValue: "/cp"
-    dependsOn:
-      name: generateRouteConfigFromServiceDoc
-      value: true
+    # dependsOn:
+    #   name: generateRouteConfigFromServiceDoc
+    #   value: true
 
   - name: specifyPredicateHost
     label: "Service Configuration: Route by Host"
@@ -214,9 +223,9 @@ accelerator:
     dataType: boolean
     inputType: checkbox
     defaultValue: false
-    dependsOn:
-      name: generateRouteConfigFromServiceDoc
-      value: true
+    # dependsOn:
+    #   name: generateRouteConfigFromServiceDoc
+    #   value: true
 
   - name: servicePredicateHost
     label: "Service Configuration: Host Predicate"
@@ -233,16 +242,16 @@ accelerator:
     display: true
     dataType: [string]
     defaultValue: ["StripPrefix=1"]
-    dependsOn:
-      name: generateRouteConfigFromServiceDoc
-      value: true
+    # dependsOn:
+    #   name: generateRouteConfigFromServiceDoc
+    #   value: true
 
-  - name: serviceAppName
-    label: "Service Configuration: tPCF Application Name"
-    description: Application to 'bind' to gateway service
-    display: true
-    inputType: text
-    defaultValue: "cp"
+  # - name: serviceAppName
+  #   label: "Service Configuration: tPCF Application Name"
+  #   description: Application to 'bind' to gateway service
+  #   display: true
+  #   inputType: text
+  #   defaultValue: "cp"
     
   - name: serviceOpenApiUrl
     label: "Service Configuration: OpenAPI URL"
@@ -250,9 +259,9 @@ accelerator:
     display: true
     inputType: text
     defaultValue: "https://cp.homelab.fynesy.com/api-docs"
-    dependsOn:
-      name: generateRouteConfigFromServiceDoc
-      value: true
+    # dependsOn:
+    #   name: generateRouteConfigFromServiceDoc
+    #   value: true
 
   - name: routeConfigurationOverridesEnabled
     label: "Apply Route Configuration Overides"
@@ -261,20 +270,17 @@ accelerator:
     dataType: boolean
     inputType: checkbox
     defaultValue: false
-    dependsOn:
-      name: generateRouteConfigFromServiceDoc
-      value: true
     
 
   - name: routesArray
-    label: "Route Configuration: override"
+    label: "Route Configuration Overrides"
     description: "Path/Method match service methods to provide additional configuration"
     dataType: [RouteType]
     defaultValue: [{ "path":"/**","method":"GET,POST,PUT,PATCH,DELETE,OPTIONS,TRACE,HEAD","filters":["StripPrefix=0"],"tags":[],"order":"10"}]
     #!defaultValue: [{ "path":"/**","method":["GET","POST","PUT","PATCH","DELETE","OPTIONS","TRACE","HEAD"],"filters":["StripPrefix=0"],"order":"10"}]
-    # dependsOn:
-    #   name: routeConfigurationOverridesEnabled
-    #   value: true
+    #! dependsOn:
+    #!   name: routeConfigurationOverridesEnabled
+    #!   value: true
 
 ##########################################################################################################
 # CORS WORKAROUND
@@ -361,52 +367,6 @@ accelerator:
 
 
 
-    # - name: RouteType2
-    #   struct:
-    #     - name: path
-    #       dataType: string
-    #       label: "Match Rule: Context/Path"
-    #     - name: method
-    #       label: "Match Rule: Method(s)"
-    #       dataType: [string]
-    #       inputType: checkbox
-    #       choices:
-    #         - text: GET
-    #           value: GET
-    #         - text: POST
-    #           value: POST
-    #         - text: PUT
-    #           value: PUT
-    #         - text: PATCH
-    #           value: PATCH
-    #         - text: DELETE
-    #           value: DELETE
-    #         - text: OPTIONS
-    #           value: OPTIONS
-    #         - text: TRACE
-    #           value: TRACE
-    #         - text: HEAD
-    #           value: HEAD
-    #     - name: filters
-    #       dataType: [string]
-    #       label: "Filters"
-    #       description: Filters list for route; e.g. 'SsoLogin' and 'Scopes=group1'
-    #     - name: order
-    #       datatype: string
-    #       label: Route Priority
-
-
-   
-    - name: ServiceConfigType
-      struct:
-        - name: serviceName
-          dataType: string
-        - name: servicePrefixPath
-          dataType: string
-        - name: serviceFilters
-          dataType: [string]
-
-
 
 
 
@@ -422,8 +382,6 @@ engine:
 #!  - name: gatewayCorsAllowedMethodsString
 #!    expression: "'GET,POST,PUT,PATCH,DELETE,OPTIONS,TRACE,HEAD'"
 #!   expression: 'T(String).valueOf(#gatewayCorsAllowedMethodsString).split(",")'
-#! Start with global search & replace for text substitutions
-#!   Update ingress-domain, github gitops repo url, name & branch, tlsMode
 
   chain:
   - merge:
@@ -433,21 +391,10 @@ engine:
         substitutions:
         - text: GATEWAY_NAME
           with: "#gatewayName"
-        #! - text: GATEWAY_HOSTNAME
-        #!   with: "#gatewayHostname"
-        #! - text: IMPLEMENTATION_OPENAPI_URL
-        #!   with: "#serviceOpenApiUrl"
         - text: OPENAPI_TO_ROUTE_CONVERSTION_SERVICE_ENDPOINT
           with: "#openApiToRouteConfigConversionServiceEndpoint"
         - text: SERVICE_TO_FACADE_APP_NAME
           with: "#serviceAppName"
-        #! - text: SERVICE_STRIP_PREFIX_VALUE
-        #!   with: "#serviceStripPrefixValue"
-        #! - text: SERVICE_PREDICATE_PATH
-        #!   with: "#servicePredicatePath"
-
-        #! - text: ROUTES_TEST
-        #!   with: "#routesArray.toString()"
       - merge:
         - include: ["**"]
           exclude: ['tpcf-gateway/gateway.yaml']
@@ -495,23 +442,17 @@ engine:
             - text: "#ADDITIONAL-ROUTES# "
               with: "''"
             condition: "#additionalRoutesEnabled"
+          - type: ReplaceText
+            substitutions:
+            - text: "#CONVERT-SERVICE-DOC# "
+              with: "''"
+            condition: "#generateRouteConfigFromServiceDoc"
+          - type: ReplaceText
+            substitutions:
+            - text: "#NO-CONVERT-SERVICE-DOC# "
+              with: "''"
+            condition: "#generateRouteConfigFromServiceDoc == false"
 
-      #! - merge:
-      #!   - include: ["**"]
-      #!     exclude: ['tpcf-gateway/**']
-      #!   - include: ['tpcf-gateway/**']
-      #!     chain:
-      #!     - type: ReplaceText
-      #!       substitutions:
-      #!       - text: GATEWAY_TITLE
-      #!         with: "#gatewayTitle"
-      #!       - text: GATEWAY_DESCRIPTION
-      #!         with: "#gatewayDescription"
-      #!       - text: GATEWAY_VERSION
-      #!         with: "#gatewayVersion"
-      #!       - text: GATEWAY_API_GROUP_ID
-      #!         with: "#gatewayApiGroupId"
-      #!       condition: "#createGateway"
   
   - exclude: ['notes.txt']
     include: ['**']
