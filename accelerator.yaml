@@ -497,7 +497,7 @@ engine:
             condition: "#generateRouteConfigFromServiceDoc == false"
           - type: ReplaceText
             substitutions:
-            - text: "#REMOVE_ROUTES# "
+            - text: "#REMOVE-ROUTES# "
               with: "''"
             condition: "#routeRemovalEnabled"
 

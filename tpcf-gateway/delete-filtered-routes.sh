@@ -1,4 +1,5 @@
 cp route.json route-pre-delete.json
+ytt -f route-removals-data.yaml --output json >  route-removals-data.json
 for i in $(cat route-removals-data.json| jq -c '.routes[]'); 
 do
     m=$(echo $i | jq -r .method)
