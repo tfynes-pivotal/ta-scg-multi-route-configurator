@@ -1,5 +1,5 @@
 accelerator:
-  displayName: TAP Gateway Multi-Route Configurator
+  displayName: TANZU Gateway Configurator
   description: Generates Spring Cloud Gateway deployment definition for operator based deployments in TAP clusters
   tags:
   - beta
