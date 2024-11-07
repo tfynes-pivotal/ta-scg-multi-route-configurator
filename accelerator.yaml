@@ -307,6 +307,24 @@ accelerator:
 
 
 ##########################################################################################################
+# REMOVE ROUTES
+  - name: routeRemovalEnabled
+    label: "Remove Routes based on method & path specification"
+    description: Create curated APIs by removing imported routes from Gateway configuration
+    display: true
+    dataType: boolean
+    inputType: checkbox
+    defaultValue: false
+
+  - name: routesToRemove
+    label: "Route Path/Method to Remove"
+    display: true
+    dataType: [RouteRemovalFilterType]
+    dependsOn:
+      name: routeRemovalEnabled
+      value: true
+
+##########################################################################################################
 # PLATFORM CONFIGURATION
 
   - name: platformConfiguration
@@ -365,7 +383,14 @@ accelerator:
           datatype: string
           label: Route Priority
 
-
+    - name: RouteRemovalFilterType
+      struct:
+        - name: path
+          dataType: string
+          label: "Path"
+        - name: method
+          dataType: string
+          label: "Method"
 
 
 
@@ -414,6 +439,14 @@ engine:
           chain:
           - type: YTT
         condition: "#additionalRoutesEnabled"
+      - merge:
+        - include: ["**"]
+          exclude: ['tpcf-gateway/route-removals-data.yaml']
+        - include: ['tpcf-gateway/route-removals-data.yaml']
+          chain:
+          - type: YTT
+        condition: "#routeRemovalEnabled"
+
 
 ### JSON NUMBER TYPE FIX = STRIPS THE QUOTES OF VALUE OF 'ORDER' ELEMENT IN JSON CONFIG
       - merge:
@@ -462,6 +495,12 @@ engine:
             - text: "#NO_GENERATE_RC_FROM_DOC# "
               with: "''"
             condition: "#generateRouteConfigFromServiceDoc == false"
+          - type: ReplaceText
+            substitutions:
+            - text: "#REMOVE_ROUTES# "
+              with: "''"
+            condition: "#routeRemovalEnabled"
+
 
   
   - exclude: ['notes.txt']
@@ -488,5 +527,9 @@ engine:
   - exclude: ['tpcf-gateway/routeConfig.yaml']
     include: ['**']
     condition: "#generateRouteConfigFromServiceDoc != true"
+
+  - exclude: ['tpcf-gateway/route-removals-data.yaml','tpcf-gateway/delete-filtered-routes.sh']
+    include: ['**']
+    condition: "#routeRemovalEnabled != true"
   
 
