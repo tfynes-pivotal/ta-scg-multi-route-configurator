@@ -130,6 +130,16 @@ accelerator:
       name: gatewaySecured
       value: true
 
+  - name: identityProviders
+    label: "Gateway Configuration: Identity-Providers List"
+    description: List of Platform integrated SSO identity providers. Leave blank for internal plan
+    display: true
+    dataType: [string]
+    dependsOn:
+      name: gatewaySecured
+      value: true
+  
+
   - name: ssoScopes
     label: "Gateway Configuration: SSO Scopes List"
     description: List of SSO scopes gateway is permitted to use

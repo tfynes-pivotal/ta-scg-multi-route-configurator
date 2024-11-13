@@ -16,6 +16,9 @@ api-group-id: #@ data.values.gatewayApiGroupId
 sso:
   plan: #@ data.values.ssoPlan
   scopes: #@ data.values.ssoScopes
+  #@ if data.values.identityProviders != []:
+  identity-providers: #@ data.values.identityProviders
+  #@ end
 #@ end
 #@ if data.values.gatewayCorsEnabled:
 cors:
