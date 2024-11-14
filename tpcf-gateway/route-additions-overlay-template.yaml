@@ -6,3 +6,13 @@ routes:
 (@ load("@ytt:data","data") @)
 (@ load("@ytt:yaml","yaml") @)
 (@=yaml.encode(data.values.routes)@)
+
+
+#@overlay/match missing_ok=True
+service:
+  #@overlay/match missing_ok=True
+  predicates:
+  #@overlay/append
+  (@ load("@ytt:data","data") @)
+  (@ load("@ytt:yaml","yaml") @)
+  (@=yaml.encode(data.values.service.predicates)@)

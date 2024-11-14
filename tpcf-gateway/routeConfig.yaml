@@ -6,8 +6,7 @@ service:
   pathPrefix: #@ data.values.servicePredicatePath
   #@ end
   #@ if data.values.specifyPredicateHost: 
-  predicates: 
-  - #@ "Host=" + data.values.servicePredicateHost
+  predicates: #@ data.values.servicePredicateHost
   #@ end
 openapi:
   location: #@ data.values.serviceOpenApiUrl

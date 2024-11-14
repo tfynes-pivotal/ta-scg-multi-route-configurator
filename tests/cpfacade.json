@@ -1,0 +1,70 @@
+{
+  "projectName": "cpfacade",
+  "gatewayName": "cpfacade",
+  "serviceAppName": "cp",
+  "createGateway": true,
+  "gatewayHostname": "cpfacade",
+  "gatewayCount": "1",
+  "specifyGatewayBaseUrls": false,
+  "gatewayBaseUrls": [
+    "cp-router.homelab.fynesy.com",
+    "inv-router.homelab.fynesy.com"
+  ],
+  "gatewayTitle": "cpfacade Entity Services",
+  "gatewayDescription": "cpfacade Entity Services Description",
+  "gatewayApiGroupId": "cpfacade Auto-Managed Services",
+  "gatewayVersion": "0.0.1",
+  "gatewaySecured": false,
+  "ssoPlan": "internal",
+  "ssoScopes": [
+    "openid",
+    "group1",
+    "group2"
+  ],
+  "gatewayCorsEnabled": false,
+  "gatewayCorsAllowedOrigins": [
+    "*"
+  ],
+  "gatewayCorsAllowedMethods": "GET,PUT,POST,DELETE,PATCH,HEAD,OPTIONS,TRACE",
+  "gatewayCorsAllowedHeaders": [
+    "*"
+  ],
+  "gatewayCorsAllowCredentials": false,
+  "generateRouteConfigFromServiceDoc": true,
+  "serviceOpenApiUrl": "https://cp.homelab.fynesy.com/api-docs",
+  "servicePredicatePath": "",
+  "serviceFilters": [
+    "StripPrefix=0"
+  ],
+  "specifyPredicateHost": false,
+  "servicePredicateHost": [
+    "Host=cp-router.homelab.fynesy.com"
+  ],
+  "routeConfigurationOverridesEnabled": false,
+  "routesArray": [
+    {
+      "path": "/**",
+      "method": "GET,POST,PUT,PATCH,DELETE,OPTIONS,TRACE,HEAD",
+      "filters": [
+        "StripPrefix=0"
+      ],
+      "tags": [],
+      "order": "10"
+    }
+  ],
+  "additionalRoutesEnabled": false,
+  "additionalRoutes": [
+    {
+      "path": "/**",
+      "method": "OPTIONS",
+      "filters": [
+        "StripPrefix=0"
+      ],
+      "tags": [],
+      "order": "100"
+    }
+  ],
+  "routeRemovalEnabled": false,
+  "platformConfiguration": false,
+  "openApiToRouteConfigConversionServiceEndpoint": "https://scg-service-broker.homelab.fynesy.com/api/convert/openapi"
+}

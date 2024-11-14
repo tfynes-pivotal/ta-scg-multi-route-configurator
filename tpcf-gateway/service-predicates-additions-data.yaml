@@ -1,0 +1,9 @@
+#@ load("@ytt:data","data")
+---
+service:
+  #@ if data.values.specifyPredicateHost:
+  predicates: #@ data.values.servicePredicateHost
+  #@ else:
+  predicates:
+  -
+  #@ end

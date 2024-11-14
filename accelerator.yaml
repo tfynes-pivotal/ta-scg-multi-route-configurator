@@ -259,9 +259,9 @@ accelerator:
   - name: servicePredicateHost
     label: "Service Configuration: Host Predicate"
     description: "Gateway FQDN listener match with ** wildcard"
-    defaultValue: "cp-router.homelab.fynesy.com"
+    defaultValue: ["Host=cp-router.homelab.fynesy.com"]
     display: true
-    inputType: text
+    dataType: [string]
     dependsOn:
       name: specifyPredicateHost
       value: true
@@ -458,6 +458,13 @@ engine:
         condition: "#additionalRoutesEnabled"
       - merge:
         - include: ["**"]
+          exclude: ['tpcf-gateway/service-predicates-additions-data.yaml']
+        - include: ['tpcf-gateway/service-predicates-additions-data.yaml']
+          chain:
+          - type: YTT
+        #!condition: "#specifyPredicateHost"
+      - merge:
+        - include: ["**"]
           exclude: ['tpcf-gateway/route-removals-data.yaml']
         - include: ['tpcf-gateway/route-removals-data.yaml']
           chain:
@@ -527,6 +534,8 @@ engine:
   - exclude: ['.vscode/**']
     include: ['**']
   - exclude: ['tpcf-gateway/unused/**']
+    include: ['**']
+  - exclude: ['tests/**']
     include: ['**']
 
   - exclude: ['tpcf-gateway/1-create-gateway.sh','tpcf-gateway/gateway.json', 'tpcf-gateway/gateway.yaml']
