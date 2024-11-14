@@ -135,6 +135,7 @@ accelerator:
     description: List of Platform integrated SSO identity providers. Leave blank for internal plan
     display: true
     dataType: [string]
+    defaultValue: [""]
     dependsOn:
       name: gatewaySecured
       value: true
@@ -151,15 +152,15 @@ accelerator:
       value: true
 
   - name: gatewayCorsEnabled
-    label: "Gateway Configuration: Enable CORS"
-    description: CORS configuration - needed for gateway to allow requests from api-portal. Note allowed-origins cannot be wildcard if allowed-credentials is true. 
+    label: "Gateway/Service Configuration: Enable CORS"
+    description: CORS configuration - needed for gateway to allow requests from api-portal. Note allowed-origins cannot be wildcard if allowed-credentials is true. Triggers temporary route-configuration overlay fix to deduplicate access-control-allow-origin response headers. 
     display: true
     dataType: boolean
     inputType: checkbox
     defaultValue: false
-    dependsOn:
-      name: createGateway
-      value: true
+    # dependsOn:
+    #   name: createGateway
+    #   value: true
 
   - name: gatewayCorsAllowedOrigins
     label: "Gateway Configuration: allowed-origins"

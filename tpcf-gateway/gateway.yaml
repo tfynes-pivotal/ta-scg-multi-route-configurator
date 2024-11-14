@@ -16,7 +16,7 @@ api-group-id: #@ data.values.gatewayApiGroupId
 sso:
   plan: #@ data.values.ssoPlan
   scopes: #@ data.values.ssoScopes
-  #@ if data.values.identityProviders != []:
+  #@ if data.values.identityProviders[0] != '':
   identity-providers: #@ data.values.identityProviders
   #@ end
 #@ end
