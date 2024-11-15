@@ -42,7 +42,7 @@ echo ls $(ls)
 while IFS= read -r test4; do
     echo "Deploying Project $test4" 
     pushd $test4/tpcf-gateway
-    ./create-generate-deploy.sh & 
+    ./create-generate-deploy.sh  
     sleep 1
     popd
     echo
