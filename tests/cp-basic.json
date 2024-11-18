@@ -10,9 +10,9 @@
     "cp-router.homelab.fynesy.com",
     "inv-router.homelab.fynesy.com"
   ],
-  "gatewayTitle": "cp-basic Entity Services",
-  "gatewayDescription": "cp-basic Entity Services Description",
-  "gatewayApiGroupId": "cp-basic Auto-Managed Services",
+  "gatewayTitle": "Customer Entity Services",
+  "gatewayDescription": "Customer Entity Services Description",
+  "gatewayApiGroupId": "cp-basic tPCF Auto-Managed Services",
   "gatewayVersion": "0.0.1",
   "gatewaySecured": false,
   "ssoPlan": "internal",

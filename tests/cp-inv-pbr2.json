@@ -1,70 +1,70 @@
 {
-  "projectName": "cp-inv-pbr2",
-  "gatewayName": "cp-inv-pbr",
-  "serviceAppName": "inventory",
-  "createGateway": true,
-  "gatewayHostname": "cp-inv-pbr",
-  "gatewayCount": "1",
-  "specifyGatewayBaseUrls": false,
-  "gatewayBaseUrls": [
-    "cp-router.homelab.fynesy.com",
-    "inv-router.homelab.fynesy.com"
-  ],
-  "gatewayTitle": "cp-inv-pbr Entity Services",
-  "gatewayDescription": "cp-inv-pbr Entity Services Description",
-  "gatewayApiGroupId": "cp-inv-pbr Auto-Managed Services",
-  "gatewayVersion": "0.0.1",
-  "gatewaySecured": false,
-  "ssoPlan": "internal",
-  "ssoScopes": [
-    "openid",
-    "group1",
-    "group2"
-  ],
-  "gatewayCorsEnabled": true,
-  "gatewayCorsAllowedOrigins": [
-    "*"
-  ],
-  "gatewayCorsAllowedMethods": "GET,PUT,POST,DELETE,PATCH,HEAD,OPTIONS,TRACE",
-  "gatewayCorsAllowedHeaders": [
-    "*"
-  ],
-  "gatewayCorsAllowCredentials": false,
-  "generateRouteConfigFromServiceDoc": true,
-  "serviceOpenApiUrl": "https://inventory.homelab.fynesy.com/api-docs",
-  "servicePredicatePath": "/inv",
-  "serviceFilters": [
-    "StripPrefix=1"
-  ],
-  "specifyPredicateHost": false,
-  "servicePredicateHost": [
-    "Host=cp-router.homelab.fynesy.com"
-  ],
-  "routeConfigurationOverridesEnabled": false,
-  "routesArray": [
-    {
-      "path": "/**",
-      "method": "GET,POST,PUT,PATCH,DELETE,OPTIONS,TRACE,HEAD",
-      "filters": [
-        "StripPrefix=0"
-      ],
-      "tags": [],
-      "order": "10"
-    }
-  ],
-  "additionalRoutesEnabled": false,
-  "additionalRoutes": [
-    {
-      "path": "/**",
-      "method": "OPTIONS",
-      "filters": [
-        "StripPrefix=0"
-      ],
-      "tags": [],
-      "order": "100"
-    }
-  ],
-  "routeRemovalEnabled": false,
-  "platformConfiguration": false,
-  "openApiToRouteConfigConversionServiceEndpoint": "https://scg-service-broker.homelab.fynesy.com/api/convert/openapi"
-}
+    "projectName": "cp-inv-pbr2",
+    "gatewayName": "cp-inv-pbr",
+    "serviceAppName": "inventory",
+    "createGateway": true,
+    "gatewayHostname": "cp-inv-pbr",
+    "gatewayCount": "1",
+    "specifyGatewayBaseUrls": false,
+    "gatewayBaseUrls": [
+      "cp-router.homelab.fynesy.com",
+      "inv-router.homelab.fynesy.com"
+    ],
+    "gatewayTitle": "cp-inv-pbr Entity Services",
+    "gatewayDescription": "cp-inv-pbr Entity Services Description",
+    "gatewayApiGroupId": "cp-inv-pbr Auto-Managed Services",
+    "gatewayVersion": "0.0.1",
+    "gatewaySecured": false,
+    "ssoPlan": "internal",
+    "ssoScopes": [
+      "openid",
+      "group1",
+      "group2"
+    ],
+    "gatewayCorsEnabled": true,
+    "gatewayCorsAllowedOrigins": [
+      "*"
+    ],
+    "gatewayCorsAllowedMethods": "GET,PUT,POST,DELETE,PATCH,HEAD,OPTIONS,TRACE",
+    "gatewayCorsAllowedHeaders": [
+      "*"
+    ],
+    "gatewayCorsAllowCredentials": false,
+    "generateRouteConfigFromServiceDoc": true,
+    "serviceOpenApiUrl": "https://inventory.homelab.fynesy.com/api-docs",
+    "servicePredicatePath": "/inv",
+    "serviceFilters": [
+      "StripPrefix=1"
+    ],
+    "specifyPredicateHost": false,
+    "servicePredicateHost": [
+      "Host=cp-router.homelab.fynesy.com"
+    ],
+    "routeConfigurationOverridesEnabled": false,
+    "routesArray": [
+      {
+        "path": "/**",
+        "method": "GET,POST,PUT,PATCH,DELETE,OPTIONS,TRACE,HEAD",
+        "filters": [
+          "StripPrefix=0"
+        ],
+        "tags": [],
+        "order": "10"
+      }
+    ],
+    "additionalRoutesEnabled": false,
+    "additionalRoutes": [
+      {
+        "path": "/**",
+        "method": "OPTIONS",
+        "filters": [
+          "StripPrefix=0"
+        ],
+        "tags": [],
+        "order": "100"
+      }
+    ],
+    "routeRemovalEnabled": false,
+    "platformConfiguration": false,
+    "openApiToRouteConfigConversionServiceEndpoint": "https://scg-service-broker.homelab.fynesy.com/api/convert/openapi"
+  }

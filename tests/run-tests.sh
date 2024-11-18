@@ -1,3 +1,11 @@
+
+if [ -n "$1" ]; then
+  testsList="$1"
+else
+  testsList="tests-list.txt"
+fi
+
+
 rm -fr ./projects
 mkdir ./projects
 pushd projects
@@ -8,7 +16,7 @@ while IFS= read -r test1; do
     echo "Deleting Service $test1"
     cf delete-service $test1 -f 
     echo
-done < "../tests-list.txt"
+done < "../$testsList"
 echo
 
 echo Wait for Deletes to Finish
@@ -16,7 +24,7 @@ while IFS= read -r test2; do
     echo "Waiting for Deletion of $test2"
     ../wait-for-service-delete.sh $test2    
     echo
-done < "../tests-list.txt"
+done < "../$testsList"
 echo
 echo sleeping
 sleep 2
@@ -34,7 +42,7 @@ while IFS= read -r test3; do
     tanzu acc generate ta-scg-multi-route-configurator --local-server --output-dir ./$test3 --options-file ../$test3.json --extract
     sleep 5
     echo
-done < "../tests-list.txt"
+done < "../$testsList"
 echo
 
 echo Deploy projects
@@ -43,10 +51,10 @@ while IFS= read -r test4; do
     echo "Deploying Project $test4" 
     pushd $test4/tpcf-gateway
     ./create-generate-deploy.sh  
-    sleep 1
+    sleep 30
     popd
     echo
-done < "../tests-list.txt"
+done < "../$testsList"
 echo
 
 

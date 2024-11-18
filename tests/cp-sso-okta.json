@@ -10,8 +10,8 @@
     "cp-router.homelab.fynesy.com",
     "inv-router.homelab.fynesy.com"
   ],
-  "gatewayTitle": "cp-sso-okta Entity Services",
-  "gatewayDescription": "cp-sso-okta Entity Services Description",
+  "gatewayTitle": "OKTA SSO Protected Entity Services",
+  "gatewayDescription": "OKTA oAuth-Protected Services",
   "gatewayApiGroupId": "cp-sso-okta Auto-Managed Services",
   "gatewayVersion": "0.0.1",
   "gatewaySecured": true,

@@ -10,8 +10,8 @@
     "cp-router.homelab.fynesy.com",
     "inv-router.homelab.fynesy.com"
   ],
-  "gatewayTitle": "cp-sso-internal Entity Services",
-  "gatewayDescription": "cp-sso-internal Entity Services Description",
+  "gatewayTitle": "Internal SSO Protected Entity Services",
+  "gatewayDescription": "Internal oAuth-protected Services",
   "gatewayApiGroupId": "cp-sso-internal Auto-Managed Services",
   "gatewayVersion": "0.0.1",
   "gatewaySecured": true,

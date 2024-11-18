@@ -10,8 +10,8 @@
     "cp-router.homelab.fynesy.com",
     "inv-router.homelab.fynesy.com"
   ],
-  "gatewayTitle": "rwtestokta Entity Services",
-  "gatewayDescription": "rwtestokta Entity Services Description",
+  "gatewayTitle": "Customer Records Application (OTKA protected)",
+  "gatewayDescription": "Okta protected Customer Application",
   "gatewayApiGroupId": "rwtestokta Auto-Managed Services",
   "gatewayVersion": "0.0.1",
   "gatewaySecured": true,

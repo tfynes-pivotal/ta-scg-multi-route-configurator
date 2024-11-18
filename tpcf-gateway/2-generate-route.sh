@@ -14,7 +14,7 @@
 #ADDITIONAL-ROUTES# ytt --file-mark 'route-no-added-routes.json:type=yaml-template' -f route-no-added-routes.json -f ./route-additions-overlay.yaml --output json | jq . > ./routes.json
 #ADDITIONAL-ROUTES# cp routes.json routes.tmp
 #xADDITIONAL-ROUTES# cat routes.tmp | jq '.service.predicates |= map(select(. != null))' > routes.json
-#ADDITIONAL-ROUTES# cat routes.tmp | jq 'if .service.predicates | type == "array" and (length == 1 and .[0] == null) then del(.service) else . end' > routes.json
+#ADDITIONAL-ROUTES# cat routes.tmp | jq 'if .service.predicates | type == "array" and (length == 1 and .[0] == null) then del(.service.predicates) else . end' > routes.json
 #ADDITIONAL-ROUTES# rm routes.tmp
 
 

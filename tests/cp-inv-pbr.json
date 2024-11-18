@@ -10,8 +10,8 @@
     "cp-router.homelab.fynesy.com",
     "inv-router.homelab.fynesy.com"
   ],
-  "gatewayTitle": "cp-inv-pbr Entity Services",
-  "gatewayDescription": "cp-inv-pbr Entity Services Description",
+  "gatewayTitle": "Customer/Inventory Hybrid Services",
+  "gatewayDescription": "Customer/Inventory Path-Based Demo",
   "gatewayApiGroupId": "cp-inv-pbr Auto-Managed Services",
   "gatewayVersion": "0.0.1",
   "gatewaySecured": false,

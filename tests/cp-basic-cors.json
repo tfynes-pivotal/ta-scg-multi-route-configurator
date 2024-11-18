@@ -10,9 +10,9 @@
     "cp-router.homelab.fynesy.com",
     "inv-router.homelab.fynesy.com"
   ],
-  "gatewayTitle": "cp-basic-cors Entity Services",
-  "gatewayDescription": "cp-basic-cors Entity Services Description",
-  "gatewayApiGroupId": "cp-basic-cors Auto-Managed Services",
+  "gatewayTitle": "Customer Entity Services (Portal-Enabled)",
+  "gatewayDescription": "Customer Entity Services CORS configured",
+  "gatewayApiGroupId": "cp-basic-cors tPCF Cors Auto-Managed Services",
   "gatewayVersion": "0.0.1",
   "gatewaySecured": false,
   "ssoPlan": "internal",

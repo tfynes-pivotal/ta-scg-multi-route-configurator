@@ -10,8 +10,8 @@
     "inv-a-router.homelab.fynesy.com",
     "inv-b-router.homelab.fynesy.com"
   ],
-  "gatewayTitle": "inv-hbr Entity Services",
-  "gatewayDescription": "inv-hbr Entity Services Description",
+  "gatewayTitle": "Inventory Host-Routed Services",
+  "gatewayDescription": "Inventory services selected by host",
   "gatewayApiGroupId": "inv-hbr Auto-Managed Services",
   "gatewayVersion": "0.0.1",
   "gatewaySecured": false,
