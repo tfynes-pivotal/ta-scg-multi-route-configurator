@@ -17,6 +17,10 @@
 #ADDITIONAL-ROUTES# cat routes.tmp | jq 'if .service.predicates | type == "array" and (length == 1 and .[0] == null) then del(.service.predicates) else . end' > routes.json
 #ADDITIONAL-ROUTES# rm routes.tmp
 
+#WORKAROUND-REMOVE-SERVICE-CONFIG# cp routes.json routes.tmp
+#WORKAROUND-REMOVE-SERVICE-CONFIG# cat routes.tmp | jq 'if has("service") then del(.service) else . end' > routes.json
+#WORKAROUND-REMOVE-SERVICE-CONFIG# rm routes.tmp
+
 
 
 #NOTES-REMOVE-ROUTES# cat routes.json | jq 'del(.routes[] | select ( .method == "GET" and .path == "/api/foo"))'

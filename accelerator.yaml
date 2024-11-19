@@ -360,6 +360,14 @@ accelerator:
       name: routeRemovalEnabled
       value: true
 
+  - name: removeServiceConfig
+    label: "Remove service-level configuration" 
+    description: Temporary workaround - remove serivce configuration from generated route configuration. Used when deployying direct configured routes only.
+    display: true
+    dataType: boolean
+    inputType: checkbox
+    defaultValue: false 
+
 ##########################################################################################################
 # PLATFORM CONFIGURATION
 
@@ -546,6 +554,13 @@ engine:
             - text: "#REMOVE-ROUTES# "
               with: "''"
             condition: "#routeRemovalEnabled"
+          - type: ReplaceText
+            substitutions:
+            - text: "#WORKAROUND-REMOVE-SERVICE-CONFIG#"
+              with: "''"
+            condition: "#removeServiceConfig"
+
+            
 
 
   

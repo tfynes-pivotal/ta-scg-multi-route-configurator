@@ -2,6 +2,7 @@ cp-basic
 cp-basic-cors
 cp-curated
 cp-inv-pbr
+cp-protected
 cp-sso-internal
 cp-sso-okta
 inv-hbr

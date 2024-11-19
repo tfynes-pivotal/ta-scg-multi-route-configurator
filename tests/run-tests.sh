@@ -6,9 +6,17 @@ else
 fi
 
 
-rm -fr ./projects
-mkdir ./projects
+#rm -fr ./projects
+mkdir -p ./projects
 pushd projects
+
+echo Delete Older Project folders
+while IFS= read -r test1; do
+    echo "Deleting Project folder $test1"
+    rm -fr ./$test1
+    echo
+done < "../$testsList"
+echo
 
 
 echo Delete Services asynchronously
