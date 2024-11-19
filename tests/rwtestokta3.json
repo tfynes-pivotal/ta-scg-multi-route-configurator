@@ -1,8 +1,8 @@
 {
-  "projectName": "rwtestokta2",
-  "gatewayName": "rwtestokta",
+  "projectName": "rwtestokta3",
+  "gatewayName": "rwtestokta3",
   "serviceAppName": "cfe",
-  "createGateway": false,
+  "createGateway": true,
   "gatewayHostname": "rwtestokta",
   "gatewayCount": "1",
   "specifyGatewayBaseUrls": false,
@@ -10,9 +10,9 @@
     "cp-router.homelab.fynesy.com",
     "inv-router.homelab.fynesy.com"
   ],
-  "gatewayTitle": "rwtestokta Entity Services",
-  "gatewayDescription": "rwtestokta Entity Services Description",
-  "gatewayApiGroupId": "rwtestokta Auto-Managed Services",
+  "gatewayTitle": "rwtestokta3 Entity Services",
+  "gatewayDescription": "rwtestokta3 Entity Services Description",
+  "gatewayApiGroupId": "rwtestokta3 Auto-Managed Services",
   "gatewayVersion": "0.0.1",
   "gatewaySecured": true,
   "ssoPlan": "okta",
@@ -35,9 +35,9 @@
   "gatewayCorsAllowCredentials": false,
   "generateRouteConfigFromServiceDoc": false,
   "serviceOpenApiUrl": "https://cp.homelab.fynesy.com/api-docs",
-  "servicePredicatePath": "",
+  "servicePredicatePath": "/cp",
   "serviceFilters": [
-    "StripPrefix=0"
+    "StripPrefix=1"
   ],
   "specifyServicePredicates": false,
   "servicePredicates": [
@@ -47,11 +47,11 @@
   "routesArray": [
     {
       "path": "/**",
-      "method": "GET,POST,PUT,PATCH,DELETE,OPTIONS,TRACE,HEAD",
+      "method": "GET",
       "filters": [
         "StripPrefix=0",
         "SsoLogin",
-        "Scopes=okta"
+        "Scopes=openid"
       ],
       "tags": [],
       "order": "10"
@@ -68,7 +68,7 @@
         "Scopes=openid"
       ],
       "tags": [],
-      "order": "50"
+      "order": "100"
     }
   ],
   "routeRemovalEnabled": false,

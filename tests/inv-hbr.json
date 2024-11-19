@@ -39,8 +39,8 @@
   "serviceFilters": [
     "StripPrefix=0"
   ],
-  "specifyPredicateHost": true,
-  "servicePredicateHost": [
+  "specifyServicePredicates": true,
+  "servicePredicates": [
     "Host=inv-a-router.homelab.fynesy.com"
   ],
   "routeConfigurationOverridesEnabled": false,

@@ -16,3 +16,5 @@ service:
   (@ load("@ytt:data","data") @)
   (@ load("@ytt:yaml","yaml") @)
   (@=yaml.encode(data.values.service.predicates)@)
+
+  

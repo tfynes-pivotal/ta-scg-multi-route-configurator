@@ -34,6 +34,7 @@ accelerator:
 
   - name: gatewayHostname
     label: "Gateway Configuration: Hostname"
+    description: "Hostname for gateway, typically same as service name unless leveraging hostname based routing"
     display: true
     inputType: text
     defaultValue: cpfacade
@@ -229,7 +230,7 @@ accelerator:
 
   - name: servicePredicatePath
     label: "Service Configuration: Route by Path"
-    description: "Configure service to be accessible via a 'path-prefix' via the service gateway. Leave blank and set StripPrefix=0 for direct routing"
+    description: "Configure service to be accessible via a 'path-prefix' via the service gateway. Leave blank and set StripPrefix=0 for passthrough routing"
     display: true
     inputType: text
     defaultValue: "/cp"
@@ -246,26 +247,7 @@ accelerator:
     #   name: generateRouteConfigFromServiceDoc
     #   value: true
 
-  - name: specifyPredicateHost
-    label: "Service Configuration: Route by Host"
-    description: "Route to service based on hostname/domain matching"
-    display: true
-    dataType: boolean
-    inputType: checkbox
-    defaultValue: false
-    # dependsOn:
-    #   name: generateRouteConfigFromServiceDoc
-    #   value: true
 
-  - name: servicePredicateHost
-    label: "Service Configuration: Host Predicate"
-    description: "Gateway FQDN listener match with ** wildcard"
-    defaultValue: ["Host=cp-router.homelab.fynesy.com"]
-    display: true
-    dataType: [string]
-    dependsOn:
-      name: specifyPredicateHost
-      value: true
 
 
 
@@ -275,8 +257,6 @@ accelerator:
   #   display: true
   #   inputType: text
   #   defaultValue: "cp"
-    
-
 
   - name: routeConfigurationOverridesEnabled
     label: "Apply Route Configuration Overides"
@@ -297,6 +277,27 @@ accelerator:
     #!   name: routeConfigurationOverridesEnabled
     #!   value: true
 
+  - name: specifyServicePredicates
+    label: "Service Configuration: Predicates (e.g. Route by Host)"
+    description: "Route to service based on hostname/domain matching"
+    display: true
+    dataType: boolean
+    inputType: checkbox
+    defaultValue: false
+    # dependsOn:
+    #   name: generateRouteConfigFromServiceDoc
+    #   value: true
+
+  - name: servicePredicates
+    label: "Service Configuration: Predicates (e.g. host)"
+    description: "Service configuration predicates - e.g. Gateway FQDN listener match with ** wildcard"
+    defaultValue: ["Host=cp-router.homelab.fynesy.com"]
+    display: true
+    dataType: [string]
+    dependsOn:
+      name: specifyServicePredicates
+      value: true
+
 ##########################################################################################################
 # CORS WORKAROUND
 
@@ -304,7 +305,7 @@ accelerator:
 # ADDITIONAL ROUTES
   - name: additionalRoutesEnabled
     label: "Apply Direct-Configured Routes"
-    description: Add routes independent of backing service api-docs impports (e.g. CORS OPTIONS Routes)
+    description: Add routes independent of backing service api-docs imports. E.g. CORS OPTIONS Route for 'preflight' method routing. API-Portals need an 'options' route for PATCH,POST,DELETE method routing support.
     display: true
     dataType: boolean
     inputType: checkbox
@@ -320,6 +321,26 @@ accelerator:
     #  name: additionalRoutesEnabled
     #  value: true
 
+  # - name: specifyDirectConfigServiceFilters
+  #   label: "Service Configuration: Configure Service Filters Directly"
+  #   description: "Explicit configuration of service filters"
+  #   display: true
+  #   dataType: boolean
+  #   inputType: checkbox
+  #   defaultValue: false
+
+  # - name: serviceFilters
+  #   label: "Service Configuration: Filters (e.g. StripPrefix=0)"
+  #   description: "Service configuration Filters - explicit configuration"
+  #   defaultValue: ["StripPrefix=0"]
+  #   display: true
+  #   dataType: [string]
+  #   dependsOn:
+  #     name: specifyServiceFilters
+  #     value: true
+
+
+  
 
 ##########################################################################################################
 # REMOVE ROUTES
@@ -463,7 +484,7 @@ engine:
         - include: ['tpcf-gateway/service-predicates-additions-data.yaml']
           chain:
           - type: YTT
-        #!condition: "#specifyPredicateHost"
+        #!condition: "#specifyServicePredicates"
       - merge:
         - include: ["**"]
           exclude: ['tpcf-gateway/route-removals-data.yaml']
