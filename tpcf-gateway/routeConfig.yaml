@@ -3,7 +3,7 @@
 service:
   filters: #@ data.values.serviceFilters
   #@ if data.values.servicePredicatePath != "":
-  pathPrefix: #@ data.values.servicePredicatePath
+  path-prefix: #@ data.values.servicePredicatePath
   #@ end
   #@ if data.values.specifyServicePredicates: 
   predicates: #@ data.values.servicePredicates
