@@ -2,3 +2,5 @@
 .DS_Store
 .DS_Store
 /tests/projects/*
+tests/cfefailtest.json
+tests/cfepasstest.json
