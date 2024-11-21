@@ -67,3 +67,5 @@ echo
 
 
 popd 
+
+./run-add-route-tests.sh

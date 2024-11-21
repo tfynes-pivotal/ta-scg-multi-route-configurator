@@ -4,3 +4,6 @@
 /tests/projects/*
 tests/cfefailtest.json
 tests/cfepasstest.json
+tests/mTLS-test-client/privkey1.pem
+tests/mTLS-test-client/cert1.pem
+tests/mTLS-test-client/fullchain1.pem
