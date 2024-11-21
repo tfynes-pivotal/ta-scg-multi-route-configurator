@@ -1,0 +1,8 @@
+---
+applications:
+- name: cfe
+  buildpacks:
+    - staticfile_buildpack
+  memory: 64M
+  path: build
+  
